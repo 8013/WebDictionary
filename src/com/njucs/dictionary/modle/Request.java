@@ -5,7 +5,9 @@ import java.io.Serializable;
 /**
  * 客户端发送的请求类，no表示请求的种类
  * 服务器端根据不同的no转向不同的处理
- * no = 1		Login
+ * 登录	1
+ * 注册	2
+ * 搜索	3
  * @author zhe
  *
  */
