@@ -1,5 +1,7 @@
 package com.njucs.dictionary.modle;
 
+import java.io.Serializable;
+
 /**
  * 单词点赞数（like）
  * 		有道
@@ -8,7 +10,8 @@ package com.njucs.dictionary.modle;
  * @author zhe
  *
  */
-public class Like {
+public class Like implements Serializable{
+	private static final long serialVersionUID = 5183554541964077492L;
 	private int youdao;
 	private int baidu;
 	private int bing;

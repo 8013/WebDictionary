@@ -14,7 +14,8 @@ public class User implements Serializable{
 	private String password;
 	private String email;
 	
-	// 两个重载的构造函数 3个参数
+	// 重载的构造函数
+	// 3个参数
 	public User(String username, String password, String email){
 		this.setUsername(username);
 		this.setPassword(password);
