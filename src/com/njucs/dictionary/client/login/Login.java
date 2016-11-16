@@ -3,51 +3,41 @@ package com.njucs.dictionary.client.login;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.net.Socket;
-import java.io.*;
+
 import javax.swing.*;
 
+import com.njucs.dictionary.client.common.SendRequest;
 import com.njucs.dictionary.client.register.Register;
 import com.njucs.dictionary.modle.*;
 
 public class Login extends JFrame {
 	private static final long serialVersionUID = -6765456694853821472L;
+	
 	private JTextField usernameField;
 	private JPasswordField passwordField;
 	private JButton login,register;
-	public Socket socket;
 	
+	// 按钮的响应函数
 	private void ButtonListener(){
 		
+		// 点击登录进行输入检查（判空），通过后向服务器发送登录请求
 		login.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				String username=new String(usernameField.getText());
 				String password=new String(passwordField.getPassword());
-				if(username.isEmpty()){
-					JOptionPane.showMessageDialog(null, "用户名不能为空");
-				}
-				else if(password.isEmpty()){
-					JOptionPane.showMessageDialog(null, "密码不能为空");
-				}
-				else{
-					try {
-						socket=new Socket("localhost", 8000);
-						Request request=new Request(1, new User(username, password));
-						ObjectOutputStream toServer=new ObjectOutputStream(socket.getOutputStream());
-						toServer.writeObject(request);
-						ObjectInputStream fromServer=new ObjectInputStream(socket.getInputStream());
-						Response response=(Response)fromServer.readObject();
-						System.out.println(response.getNo() + " " + response.getDescription());
-					} catch (IOException ex) {
-						ex.printStackTrace();
-					} catch (ClassNotFoundException e1) {
-						e1.printStackTrace();
-					}	
-				}
+
+				if(!CheckEmpty.Pass(username, password))
+					return ;
+				
+				Request request=new Request(1, new User(username, password));
+				
+				SendRequest.Send(request);
+				
 			}
 		});
 		
+		// 点击注册跳转到注册界面
 		register.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -57,8 +47,10 @@ public class Login extends JFrame {
 		});
 	}
 	
+	// 界面
  	public Login(){
 		Font font=new Font("微软雅黑", Font.PLAIN, 20);
+		int columns=10;
 		
 		JPanel content=new JPanel();
 		content.setLayout(new BoxLayout(content, BoxLayout.PAGE_AXIS));
@@ -75,18 +67,16 @@ public class Login extends JFrame {
 		usernameLabel.setFont(font);
 		usernamePanel.add(usernameLabel);
 		
-		usernameField=new JTextField();
+		usernameField=new JTextField(columns);
 		usernameField.setFont(font);
-		usernameField.setColumns(10);
 		usernamePanel.add(usernameField);
 		
 		JLabel passwordLabel=new JLabel("密　码：");
 		passwordLabel.setFont(font);
 		passwordPanel.add(passwordLabel);
 		
-		passwordField=new JPasswordField();
+		passwordField=new JPasswordField(columns);
 		passwordField.setFont(font);
-		passwordField.setColumns(10);
 		passwordPanel.add(passwordField);
 		
 		
@@ -103,6 +93,7 @@ public class Login extends JFrame {
 		pack();
 	}
 	
+ 	// 显示
 	public static void Show(){
 		Login frame=new Login();
 		frame.setTitle("用户登录");
