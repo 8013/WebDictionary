@@ -98,11 +98,13 @@ public class Login extends JFrame {
 	public static void Show(){
 		frame=new Login();
 		frame.setTitle("用户登录");
+		frame.setResizable(false);
 		frame.setLocationRelativeTo(null);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setVisible(true);
 	}
 	
+	// 销毁当前窗口，便于其他模块调用（HandleResponse）
 	public static void Destroy(){
 		frame.dispose();
 	}

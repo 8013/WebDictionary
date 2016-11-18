@@ -44,6 +44,7 @@ public class Message extends JFrame{
 		Message frame=new Message(message);
 		frame.setTitle("消息");
 		frame.setSize(400, 150);
+		frame.setResizable(false);
 		frame.setLocationRelativeTo(null);
 		frame.setVisible(true);
 	}

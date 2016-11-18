@@ -119,6 +119,7 @@ public class Register extends JFrame {
 	public static void Show(){
 		Register frame=new Register();
 		frame.setTitle("注册");
+		frame.setResizable(false);
 		frame.setLocationRelativeTo(null);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setVisible(true);
