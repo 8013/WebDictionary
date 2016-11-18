@@ -3,10 +3,11 @@ package com.njucs.dictionary.modle;
 import java.io.Serializable;
 
 /**
- * 单词点赞数（like）
+ * 单词点赞数（like）		
  * 		有道
  * 		百度
- * 		必应
+ * 		金山
+ * 设置点赞数上限为99，下限为0，便于显示
  * @author zhe
  *
  */
@@ -14,12 +15,12 @@ public class Like implements Serializable{
 	private static final long serialVersionUID = 5183554541964077492L;
 	private int youdao;
 	private int baidu;
-	private int bing;
+	private int jinshan;
 	
-	public Like(int youdao, int baidu, int bing){
-		this.setYoudao(youdao);
+	public Like(int baidu, int youdao, int jinshan){
 		this.setBaidu(baidu);
-		this.setBing(bing);
+		this.setYoudao(youdao);
+		this.setJinshan(jinshan);
 	}
 
 	public int getYoudao() {
@@ -38,11 +39,12 @@ public class Like implements Serializable{
 		this.baidu = baidu;
 	}
 
-	public int getBing() {
-		return bing;
+	public int getJinshan() {
+		return jinshan;
 	}
 
-	public void setBing(int bing) {
-		this.bing = bing;
+	public void setJinshan(int jinshan) {
+		this.jinshan = jinshan;
 	}
+
 }

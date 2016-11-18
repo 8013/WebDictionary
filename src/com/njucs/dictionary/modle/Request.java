@@ -7,15 +7,31 @@ import java.io.Serializable;
  * 服务器端根据不同的no转向不同的处理
  * 登录	1
  * 注册	2
- * 搜索	3
+ * 获取点赞数 3
+ * 更新点赞	4
  * @author zhe
  *
  */
 public class Request implements Serializable{
 	private static final long serialVersionUID = -5620574951901250277L;
 	private int no;
+	private String word;
 	private User user;
+	private Like like;
 	
+	// 更新点赞数时用的请求
+	public Request(int no, Like like){
+		this.no=no;
+		this.like=like;
+	}
+	
+	// 获取点赞数时使用的请求
+	public Request(int no, String word){
+		this.no=no;
+		this.word=word;
+	}
+	
+	// 用于登录注册时构造请求
 	public Request(int no, User user){
 		this.no=no;
 		this.user=user;
@@ -25,8 +41,16 @@ public class Request implements Serializable{
 		return no;
 	}
 
+	public String getWord() {
+		return word;
+	}
+	
 	public User getUser() {
 		return user;
 	}
 
+	public Like getLike() {
+		return like;
+	}
+	
 }

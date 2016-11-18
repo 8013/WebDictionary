@@ -5,8 +5,12 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
 import javax.swing.*;
+
+import com.njucs.dictionary.client.search.Youdao;
 /**
  * WebDictionary主界面
  * @author zhe
@@ -16,10 +20,14 @@ public class Home extends JFrame {
 	private static final long serialVersionUID = -7095027738615460603L;
 	
 	private int width=20,height=5;
+	private boolean baidu=false, youdao=false, jinshan=false;
 	private Font font=new Font("微软雅黑", Font.PLAIN, 20);
 	private Color background=new Color(245, 245, 245);
+	private ImageIcon like=new ImageIcon("res/like.png");
+	private ImageIcon dislike=new ImageIcon("res/dislike.png");
+	private JPanel baiduPanel, youdaoPanel, jinshanPanel, descriptionPanel;
 	private JTextArea baiduArea, youdaoArea, jinshanArea;
-	private JPanel descriptionPanel, baiduPanel, youdaoPanel, jinshanPanel;
+	public static JLabel baiduLike, youdaoLike, jinshanLike;
 	
 	// GUI构造函数
 	public Home(){
@@ -30,6 +38,7 @@ public class Home extends JFrame {
 		content.add(SearchPanel());
 		content.add(CheckPanel());
 		content.add(DescriptionPanel());
+		LikeAction();
 		pack();
 	}
 	
@@ -37,7 +46,7 @@ public class Home extends JFrame {
 	private JPanel SearchPanel(){
 		JPanel searchPanel=new JPanel();
 		JLabel searchLabel=new JLabel(new ImageIcon("res/search.png"));
-		JTextField searchField=new JTextField(17);
+		JTextField searchField=new JTextField(width);
 		searchField.setFont(font);
 		JButton searchButton=new JButton("搜索");
 		searchButton.setFont(font);
@@ -47,8 +56,19 @@ public class Home extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				String word=searchField.getText();
-				System.out.println(word);
-				// Search
+				// 检测是否是英文单词
+				if(!CheckWord.Pass(word))
+					return ;
+				
+				// 联网搜索
+				String youdao=Youdao.Translate(word);
+				youdaoArea.setText(youdao);
+				
+				// 从服务器获取点赞数
+				GetLikes.FromServer(word);
+				
+				// 根据点赞数对面板进行排序
+				// Sort
 			}
 		});
 		
@@ -60,7 +80,7 @@ public class Home extends JFrame {
 
 	// 复选面板
 	private JPanel CheckPanel(){
-		String space="                     ";
+		String space="                       ";
 		JPanel checkPanel=new JPanel();
 		JCheckBox checkBoxBaidu=new JCheckBox("百度"+space);
 		JCheckBox checkBoxYoudao=new JCheckBox("有道"+space);
@@ -73,17 +93,17 @@ public class Home extends JFrame {
 		checkBoxJinshan.setFont(font);
 		checkBoxJinshan.setSelected(true);
 				
-		// 复选操作，响应函数
+		// 复选操作，未被选中的从面板中移除
 		checkBoxBaidu.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if(!checkBoxBaidu.isSelected()){
 					descriptionPanel.remove(baiduPanel);
-					descriptionPanel.revalidate();
+					descriptionPanel.repaint();
 				}
 				else{
 					descriptionPanel.add(baiduPanel);
-					descriptionPanel.revalidate();
+					descriptionPanel.repaint();
 				}
 			}
 		});
@@ -93,11 +113,11 @@ public class Home extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				if(!checkBoxYoudao.isSelected()){
 					descriptionPanel.remove(youdaoPanel);
-					descriptionPanel.revalidate();
+					descriptionPanel.repaint();
 				}
 				else{
 					descriptionPanel.add(youdaoPanel);
-					descriptionPanel.revalidate();
+					descriptionPanel.repaint();
 				}
 			}
 		});
@@ -107,11 +127,11 @@ public class Home extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				if(!checkBoxJinshan.isSelected()){
 					descriptionPanel.remove(jinshanPanel);
-					descriptionPanel.revalidate();
+					descriptionPanel.repaint();
 				}
 				else{
 					descriptionPanel.add(jinshanPanel);
-					descriptionPanel.revalidate();
+					descriptionPanel.repaint();
 				}
 				
 			}
@@ -149,7 +169,8 @@ public class Home extends JFrame {
 		baiduArea.setEditable(false);
 		baiduPanel.add(baiduArea);
 		
-		JLabel baiduLike=new JLabel(new ImageIcon("res/dislike.png"));
+		baiduLike=new JLabel();
+		baiduLike.setFont(font);
 		baiduPanel.add(baiduLike);
 		
 		return baiduPanel;
@@ -169,7 +190,8 @@ public class Home extends JFrame {
 		youdaoArea.setEditable(false);
 		youdaoPanel.add(youdaoArea);
 		
-		JLabel youdaoLike=new JLabel(new ImageIcon("res/dislike.png"));
+		youdaoLike=new JLabel();
+		youdaoLike.setFont(font);
 		youdaoPanel.add(youdaoLike);
 		
 		return youdaoPanel;
@@ -189,17 +211,92 @@ public class Home extends JFrame {
 		jinshanArea.setEditable(false);
 		jinshanPanel.add(jinshanArea);
 		
-		JLabel jinshanLike=new JLabel(new ImageIcon("res/dislike.png"));
+		jinshanLike=new JLabel();
+		jinshanLike.setFont(font);
 		jinshanPanel.add(jinshanLike);
 		
 		return jinshanPanel;
+	}
+
+	// 点赞
+	private void LikeAction(){
+		
+		baiduLike.addMouseListener(new MouseListener() {
+			@Override
+			public void mousePressed(MouseEvent arg0) {
+				if(baidu==false){
+					baiduLike.setIcon(like);
+					baidu=true;
+				}
+				else{
+					baiduLike.setIcon(dislike);
+					baidu=false;
+				}
+				
+			}
+			@Override
+			public void mouseReleased(MouseEvent arg0) {}
+			@Override
+			public void mouseExited(MouseEvent arg0) {}
+			@Override
+			public void mouseEntered(MouseEvent arg0) {}
+			@Override
+			public void mouseClicked(MouseEvent arg0) {}
+		});
+		
+		youdaoLike.addMouseListener(new MouseListener() {
+			@Override
+			public void mousePressed(MouseEvent arg0) {
+				if(youdao==false){
+					youdaoLike.setIcon(like);
+					youdao=true;
+				}
+				else{
+					youdaoLike.setIcon(dislike);
+					youdao=false;
+				}
+				
+			}
+			@Override
+			public void mouseReleased(MouseEvent arg0) {}
+			@Override
+			public void mouseExited(MouseEvent arg0) {}
+			@Override
+			public void mouseEntered(MouseEvent arg0) {}
+			@Override
+			public void mouseClicked(MouseEvent arg0) {}
+		});
+
+		jinshanLike.addMouseListener(new MouseListener() {
+			@Override
+			public void mousePressed(MouseEvent arg0) {
+				if(jinshan==false){
+					jinshanLike.setIcon(like);
+					jinshan=true;
+				}
+				else{
+					jinshanLike.setIcon(dislike);
+					jinshan=false;
+				}
+				
+			}
+			@Override
+			public void mouseReleased(MouseEvent arg0) {}
+			@Override
+			public void mouseExited(MouseEvent arg0) {}
+			@Override
+			public void mouseEntered(MouseEvent arg0) {}
+			@Override
+			public void mouseClicked(MouseEvent arg0) {}
+		});
+		
 	}
 	
 	// 静态显示函数
 	public static void Show(){
 		Home frame=new Home();
 		frame.setTitle("WebDictionary");
-		frame.setSize(500, 600);
+		frame.setSize(520, 600);
 		frame.setResizable(false);
 		frame.setLocationRelativeTo(null);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
