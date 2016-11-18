@@ -18,7 +18,7 @@ public class Register extends JFrame {
 	private JTextField usernameField;
 	private JPasswordField passwordField1, passwordField2;
 	private JTextField emailField;
-	private JButton submit, cancle;
+	private JButton submit, back;
 	
 	// 按钮响应函数
 	private void ButtonListener(){
@@ -46,7 +46,7 @@ public class Register extends JFrame {
 		});
 		
 		// 点击取消按钮返回登录界面
-		cancle.addActionListener(new ActionListener() {
+		back.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				Login.Show();
@@ -107,9 +107,9 @@ public class Register extends JFrame {
 		submit.setFont(font);
 		buttonPanel.add(submit);
 		
-		cancle=new JButton("取消");
-		cancle.setFont(font);
-		buttonPanel.add(cancle);
+		back=new JButton("返回登录界面");
+		back.setFont(font);
+		buttonPanel.add(back);
 		
 		ButtonListener();
 		pack();
