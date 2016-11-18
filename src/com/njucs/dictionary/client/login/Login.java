@@ -16,6 +16,7 @@ public class Login extends JFrame {
 	private JTextField usernameField;
 	private JPasswordField passwordField;
 	private JButton login,register;
+	private static Login frame;
 	
 	// 按钮的响应函数
 	private void ButtonListener(){
@@ -95,11 +96,14 @@ public class Login extends JFrame {
 	
  	// 显示
 	public static void Show(){
-		Login frame=new Login();
+		frame=new Login();
 		frame.setTitle("用户登录");
 		frame.setLocationRelativeTo(null);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setVisible(true);
 	}
 	
+	public static void Destroy(){
+		frame.dispose();
+	}
 }
