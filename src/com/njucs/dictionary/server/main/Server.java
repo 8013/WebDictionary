@@ -60,16 +60,18 @@ public class Server {
 		serverframe.SetOnlineNum(OnlineNum);
 	}
 	
-	private Response HandleRequest(Request request){
-		Response response=new Response(100,"ok");
+	private Response HandleRequest(Request request, String IPAddr){
+		Response response=new Response(100,"请求号码错误");
 		switch(request.getNo()){
 		case 1:{
 			try {
 				response=service.VerifyPassword(request.getUser().getUsername(), request.getUser().getPassword());
-				if(response.getNo()==100)
-					serverframe.AddMessage("Login: ID:"+request.getUser().getUsername()+" Success!", serverframe.GetTypeIndex("Login"));
-				else
-					serverframe.AddMessage("Login: ID:"+request.getUser().getUsername()+" Fail!", serverframe.GetTypeIndex("Login"));
+				if(response.getNo()==100){
+					serverframe.AddMessage("Login", "ID:"+request.getUser().getUsername(), "Success", IPAddr);
+				}
+				else{
+					serverframe.AddMessage("Login", "ID:"+request.getUser().getUsername(), "Fail", IPAddr);
+				}
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
@@ -79,10 +81,11 @@ public class Server {
 			try{
 				response=service.Register(request.getUser().getUsername(), request.getUser().getPassword(), request.getUser().getEmail());
 				if(response.getNo()==200){
-					serverframe.AddMessage("Register: ID:"+request.getUser().getUsername()+" Success!",serverframe.GetTypeIndex("Register"));
+					serverframe.AddMessage("Register", "ID:"+request.getUser().getUsername(), "Success", IPAddr);
 				}
-				else
-					serverframe.AddMessage("Register: ID:"+request.getUser().getUsername()+" Fail!",serverframe.GetTypeIndex("Register"));
+				else{
+					serverframe.AddMessage("Register", "ID:"+request.getUser().getUsername(), "Fail", IPAddr);
+				}
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
@@ -118,11 +121,12 @@ public class Server {
 				fromClient=new ObjectInputStream(socket.getInputStream());
 				Response response;
 				toClient=new ObjectOutputStream(socket.getOutputStream());
+				String IPAddr=socket.getInetAddress().getHostAddress();
 				while(true){
-					serverframe.AddMessage("Client IP:"+socket.getInetAddress().getHostAddress(),serverframe.GetTypeIndex("all"));
+					//serverframe.AddMessage("Client IP:"+socket.getInetAddress().getHostAddress(),serverframe.GetTypeIndex("all"));
 					Request request;
 					request = (Request)fromClient.readObject();
-					response=HandleRequest(request);
+					response=HandleRequest(request, IPAddr);
 					toClient.writeObject(response);
 					try{
 						socket.sendUrgentData(0);
