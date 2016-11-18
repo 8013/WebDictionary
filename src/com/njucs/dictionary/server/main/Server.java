@@ -19,12 +19,11 @@ import com.njucs.dictionary.server.service.Service;
  */
 
 public class Server {
+	private ServerSocket serverSocket;
+	private ServerFrame serverframe;
+	private Service service;
 	
-	private ObjectInputStream fromClient;
-	private ObjectOutputStream toClient;
-	public ServerSocket serverSocket;
-	private ServerFrame sf;
-	private Service sv;
+	private int OnlineNum=0;
 	
 	public static void main(String[] args) {
 		new Server();
@@ -33,8 +32,8 @@ public class Server {
 	public Server(){
 		try{
 			serverSocket=new ServerSocket(8000);
-			sf=new ServerFrame();
-			sv=new Service();
+			serverframe=new ServerFrame();
+			service=new Service();
 			System.out.println("Server started ");
 			mainloop();
 		} catch(IOException ex){
@@ -50,45 +49,94 @@ public class Server {
 		}
 	}
 	
+	//保证OnlineNum不会出现小于0的情况
+	private synchronized void AddOnlineNum(){
+		OnlineNum++;
+		serverframe.SetOnlineNum(OnlineNum);
+	}
+	
+	private synchronized void MinusOnlineNum(){
+		OnlineNum--;
+		serverframe.SetOnlineNum(OnlineNum);
+	}
+	
+	private Response HandleRequest(Request request){
+		Response response=new Response(100,"ok");
+		switch(request.getNo()){
+		case 1:{
+			try {
+				response=service.VerifyPassword(request.getUser().getUsername(), request.getUser().getPassword());
+				if(response.getNo()==100)
+					serverframe.AddMessage("Login: ID:"+request.getUser().getUsername()+" Success!", serverframe.GetTypeIndex("Login"));
+				else
+					serverframe.AddMessage("Login: ID:"+request.getUser().getUsername()+" Fail!", serverframe.GetTypeIndex("Login"));
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			break;
+		}
+		case 2:{
+			try{
+				response=service.Register(request.getUser().getUsername(), request.getUser().getPassword(), request.getUser().getEmail());
+				if(response.getNo()==200){
+					serverframe.AddMessage("Register: ID:"+request.getUser().getUsername()+" Success!",serverframe.GetTypeIndex("Register"));
+				}
+				else
+					serverframe.AddMessage("Register: ID:"+request.getUser().getUsername()+" Fail!",serverframe.GetTypeIndex("Register"));
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			break;
+		}
+		default:break;
+		}
+		return response;
+	}
+	
 	private void mainloop() throws IOException, ClassNotFoundException{
 		while(true){
-			Response response=new Response(100,"ok");
 			Socket socket=serverSocket.accept();
-			fromClient=new ObjectInputStream(socket.getInputStream());
-			toClient=new ObjectOutputStream(socket.getOutputStream());
-			
-			Request request=(Request)fromClient.readObject();
-			System.out.println(request.getNo() + " " + request.getUser().getUsername() + " " +
-					request.getUser().getPassword());
-			switch(request.getNo()){
-			case 1:{
-				try {
-					response=sv.VerifyPassword(request.getUser().getUsername(), request.getUser().getPassword());
-					if(response.getNo()==100)
-						sf.AddMessage("Login: ID:"+request.getUser().getUsername()+" Success!", sf.GetTypeIndex("Login"));
-					else
-						sf.AddMessage("Login: ID:"+request.getUser().getUsername()+" Fail!", sf.GetTypeIndex("Login"));
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-				break;
-			}
-			case 2:{
-				try{
-					response=sv.Register(request.getUser().getUsername(), request.getUser().getPassword(), request.getUser().getEmail());
-					if(response.getNo()==200){
-						sf.AddMessage("Register: ID:"+request.getUser().getUsername()+" Success!",sf.GetTypeIndex("Regist"));
-					}
-					else
-						sf.AddMessage("Register: ID:"+request.getUser().getUsername()+" Fail!",sf.GetTypeIndex("Regist"));
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-				break;
-			}
-			default:break;
-			}
-			toClient.writeObject(response);
+			HandleARequest handleArequest=new HandleARequest(socket);
+			new Thread(handleArequest).start();
+			AddOnlineNum();
 		}
+	}
+	
+	private class HandleARequest implements Runnable{
+		Socket socket;
+		
+		private ObjectInputStream fromClient;
+		private ObjectOutputStream toClient;
+
+		public HandleARequest(Socket socket){
+			this.socket=socket;
+		}
+		
+		@Override
+		public void run() {
+			try {
+				fromClient=new ObjectInputStream(socket.getInputStream());
+				Response response;
+				toClient=new ObjectOutputStream(socket.getOutputStream());
+				while(true){
+					serverframe.AddMessage("Client IP:"+socket.getInetAddress().getHostAddress(),serverframe.GetTypeIndex("all"));
+					Request request;
+					request = (Request)fromClient.readObject();
+					response=HandleRequest(request);
+					toClient.writeObject(response);
+					try{
+						socket.sendUrgentData(0);
+					} catch(IOException e){
+						break;
+					}
+				}
+			} catch (IOException e) {
+				e.printStackTrace();
+			} catch (ClassNotFoundException e){
+				e.printStackTrace();
+			}
+			MinusOnlineNum();
+		}
+		
 	}
 }

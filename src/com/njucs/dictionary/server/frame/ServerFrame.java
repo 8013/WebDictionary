@@ -28,12 +28,13 @@ public class ServerFrame extends JFrame{
 	private JScrollPane Content;
 	private JButton ClearMessage;
 	private JComboBox<String> MessageType;
-	private JLabel label;
+	private JLabel labelhead;
+	private JLabel labelbottom;
 	private StringBuilder Message;
 	private Vector<String> MessageVector;
 	private Vector<Integer>[] MessageIndex;
 	private int CurrentType=0;
-	private final String[] type={"All","Login","Logout","Regist","Like","Cancellike"};
+	private final String[] type={"All","Login","Logout","Register","Like","Cancellike"};
 	
 	public ServerFrame(){
 		super();
@@ -44,7 +45,8 @@ public class ServerFrame extends JFrame{
 		this.add(SetContent());
 		this.add(SetClearButton());
 		this.add(SetMessageType());
-		this.add(SetLabel());
+		this.add(SetLabelHead());
+		this.add(SetLabelBottom());
 		
 		this.setTitle("WebDic-Server");
 		this.setVisible(true);
@@ -107,21 +109,27 @@ public class ServerFrame extends JFrame{
 		
 	}
 	
-	private JLabel SetLabel(){
+	private JLabel SetLabelHead(){
 		InetAddress res;
 		try {
 			res = InetAddress.getLocalHost();
-			label=new JLabel("Server Address:"+res.getHostAddress());
-			label.setBounds(0, 0, 300, 20);
+			labelhead=new JLabel("Server Address:"+res.getHostAddress());
+			labelhead.setBounds(0, 0, 300, 20);
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
 		}
-		return label;
+		return labelhead;
+	}
+	
+	private JLabel SetLabelBottom(){
+		labelbottom=new JLabel("Current Online Client Num: 0");
+		labelbottom.setBounds(0,340,600,20);
+		return labelbottom;
 	}
 	
 	private JScrollPane SetContent(){
 		Content=new JScrollPane();
-		Content.setBounds(0, 20, 600, 370);
+		Content.setBounds(0, 20, 600, 320);
 		Content.setViewportView(SetMessageBox());
 		return Content;
 	}
@@ -171,6 +179,10 @@ public class ServerFrame extends JFrame{
 			Message.append('\n');
 			MessageBox.setText(Message.toString());
 		}
+	}
+	
+	public void SetOnlineNum(int num){
+		labelbottom.setText("Current Online Client Num:"+num);
 	}
 	
 	public void close(){
