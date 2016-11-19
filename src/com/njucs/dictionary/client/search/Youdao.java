@@ -54,7 +54,7 @@ public class Youdao {
 		// 处理XML中的值
 		int re1 = result.indexOf("<errorCode>");
 		int re2 = result.indexOf("</errorCode>");
-		String temp=null,explanation=null;
+		String temp="",explanation="";
 		if(re1>0&&re2>0){
 			temp = result.substring(re1 + 11, re2);
 		}
@@ -62,21 +62,19 @@ public class Youdao {
 			return "NULL";
 		}
 			
-		if (temp.equals("0")) {
-
-			re1 = result.indexOf("<paragraph><![CDATA[");
-			re2 = result.indexOf("]]></paragraph>");
-			if(re1>0&&re2>0){
-				temp = result.substring(re1 + 20, re2);
-				explanation=temp;
+		if (temp.equals("0")) {			
+			while((re1 = result.indexOf("<ex><![CDATA["))>0 && (re2 = result.indexOf("]]></ex>"))>0){
+				temp =result.substring(re1 + 13, re2)+"\n";
+				explanation+=temp;
+				result=result.substring(re2+7);
 			}
-			
-			re1 = result.indexOf("<ex><![CDATA[");
+/*			re1 = result.indexOf("<ex><![CDATA[");
 			re2 = result.indexOf("]]></ex>");
 			if(re1>0&&re2>0){
 				temp =result.substring(re1 + 13, re2);
 				explanation+=temp;
 			}
+*/		
 		} else{
 			explanation="NULL";
 		}

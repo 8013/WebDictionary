@@ -25,12 +25,12 @@ public class HandleResponse {
 		}
 		else if(response.getNo()==300){
 			Like like=response.getLike();
-			Home.baiduLike.setIcon(dislike);
-			Home.youdaoLike.setIcon(dislike);
-			Home.jinshanLike.setIcon(dislike);
-			Home.baiduLike.setText(like.getBaidu()>9 ? ""+like.getBaidu() : "0"+like.getBaidu());
-			Home.youdaoLike.setText(like.getYoudao()>9 ? ""+like.getYoudao() : "0"+like.getYoudao());
-			Home.jinshanLike.setText(like.getJinshan()>9 ? ""+like.getJinshan() : "0"+like.getJinshan());
+			Home.baidu.getLikeLabel().setIcon(dislike);
+			Home.youdao.getLikeLabel().setIcon(dislike);
+			Home.jinshan.getLikeLabel().setIcon(dislike);
+			Home.baidu.getLikeLabel().setText(like.getBaidu()>9 ? ""+like.getBaidu() : "0"+like.getBaidu());
+			Home.youdao.getLikeLabel().setText(like.getYoudao()>9 ? ""+like.getYoudao() : "0"+like.getYoudao());
+			Home.jinshan.getLikeLabel().setText(like.getJinshan()>9 ? ""+like.getJinshan() : "0"+like.getJinshan());
 		}
 		else if(response.getNo()==301){
 			;
