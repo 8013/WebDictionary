@@ -7,6 +7,7 @@ import java.awt.event.ActionListener;
 
 import javax.swing.*;
 
+import com.njucs.dictionary.client.search.Jinshan;
 import com.njucs.dictionary.client.search.Youdao;
 /**
  * WebDictionary主界面
@@ -36,7 +37,7 @@ public class Home extends JFrame {
 	private JPanel SearchPanel(){
 		JPanel searchPanel=new JPanel();
 		JLabel searchLabel=new JLabel(new ImageIcon("res/search.png"));
-		JTextField searchField=new JTextField(20);
+		JTextField searchField=new JTextField(35);
 		searchField.setFont(font);
 		JButton searchButton=new JButton("搜索");
 		searchButton.setFont(font);
@@ -53,6 +54,8 @@ public class Home extends JFrame {
 				// 联网搜索
 				youdao.getTextArea().setText(Youdao.Translate(word));
 				youdao.getTextArea().setCaretPosition(0);
+				jinshan.getTextArea().setText(Jinshan.Translate(word));
+				jinshan.getTextArea().setCaretPosition(0);
 				
 				// 从服务器获取点赞数
 				GetLikes.FromServer(word);
@@ -153,7 +156,7 @@ public class Home extends JFrame {
 	public static void Show(){
 		Home frame=new Home();
 		frame.setTitle("WebDictionary");
-		frame.setSize(520, 600);
+		frame.setSize(800, 850);
 		frame.setResizable(false);
 		frame.setLocationRelativeTo(null);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

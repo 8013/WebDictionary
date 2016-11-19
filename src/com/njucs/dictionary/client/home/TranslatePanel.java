@@ -9,7 +9,7 @@ import javax.swing.*;
 public class TranslatePanel extends JPanel{
 	private static final long serialVersionUID = 6776279784085225536L;
 	
-	private int height=5,width=20;
+	private int height=8,width=35;
 	private boolean flag=false;
 	private String name;
 	private Color background=new Color(245, 245, 245);
