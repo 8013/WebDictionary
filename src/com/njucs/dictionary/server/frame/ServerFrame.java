@@ -6,6 +6,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.text.SimpleDateFormat;
@@ -95,8 +100,20 @@ public class ServerFrame extends JFrame{
 		public void actionPerformed(ActionEvent e) {
 			int index=((JComboBox<String>)e.getSource()).getSelectedIndex();
 			CurrentType=index;
-			Message=GetMessage();
+			Message.clear();
 			model.setDataVector(Message, ColumnNames);
+			Vector<Vector<String>> TempMessage=GetMessage();
+			for(int i=0;i<TempMessage.size();i++){
+				Vector<String> Row=new Vector<String>();
+				Row.add(TempMessage.get(i).get(0));
+				Row.add(TempMessage.get(i).get(1));
+				Row.add(TempMessage.get(i).get(2));
+				Row.add(TempMessage.get(i).get(3));
+				Row.add(TempMessage.get(i).get(4));
+				model.addRow(Row);
+			}
+			RefreshTableFontColor();
+			
 		}
 		
 	}
@@ -125,6 +142,7 @@ public class ServerFrame extends JFrame{
 		ColumnNames.add("Type");
 		ColumnNames.add("Description");
 		ColumnNames.add("State");
+		ColumnNames.add("TimeStamp");
 		ColumnNames.add("IP Address");
 		MessageTable=new JTable(model);
 		MessageTable.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
@@ -147,18 +165,39 @@ public class ServerFrame extends JFrame{
 	
 	private class CloseWindow extends WindowAdapter{
 		public void windowClosing(WindowEvent e){
+			close();
 			System.exit(0);
 		}
 	}
 	
 	private Vector<Vector<String>> GetMessage(){
-		if(CurrentType==0)
-			return BufferedMessage;
 		Message.clear();
+		Vector<Vector<String>> TempMessage=new Vector<Vector<String>>();
 		for(int i=0;i<MessageIndex[CurrentType].size();i++){
-			Message.add(BufferedMessage.get(i));
+			TempMessage.add(BufferedMessage.get(MessageIndex[CurrentType].get(i)));
 		}
-		return Message;
+		return TempMessage;
+	}
+	
+	private void RefreshTableFontColor(){
+		//修改表格行颜色
+		DefaultTableCellRenderer dtc=new DefaultTableCellRenderer(){
+			public Component getTableCellRendererComponent(JTable table,Object value,boolean isSelected,boolean hasFocus,int row,int column){
+				if(MessageTable.getModel().getValueAt(row, 2).equals("Fail")){
+					setForeground(Color.RED);
+				}
+				else if(MessageTable.getModel().getValueAt(row, 2).equals("Success")){
+					setForeground(Color.GREEN);
+				}
+				else
+					setForeground(Color.BLACK);
+				return super.getTableCellRendererComponent(table,value,isSelected,hasFocus,row,column);
+			}
+		};
+		
+		for(int j=0;j<MessageTable.getColumnCount();j++){
+			MessageTable.getColumnModel().getColumn(j).setCellRenderer(dtc);
+		}
 	}
 	
 	public int GetTypeIndex(String s){
@@ -171,19 +210,41 @@ public class ServerFrame extends JFrame{
 	
 	private void ServerStart(){
 		SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		AddMessage("All","Server Start At "+sdf.format(new Date()),"","");
+		AddMessage("All","Server Start","",sdf.format(new Date()),"");
 	}
 	
 	private void ServerEnd(){
 		SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		AddMessage("All","Server Start At "+sdf.format(new Date()),"","");
+		AddMessage("All","Server End","",sdf.format(new Date()),"");
+		SaveLog();
+		BufferedMessage.clear();
 	}
 	
-	public void AddMessage(String Type, String Description, String State, String IPAddress){
+	private void SaveLog(){
+		File file=new File("Service.log");
+		FileOutputStream out;
+		try{
+			out=new FileOutputStream(file);
+			OutputStreamWriter ops=new OutputStreamWriter(out,"UTF-8");
+			BufferedWriter writer=new BufferedWriter(ops);
+			for(int i=0;i<BufferedMessage.size();i++){
+				for(int j=0;j<BufferedMessage.get(i).size();j++){
+					writer.write(BufferedMessage.get(i).get(j)+"\t");
+				}
+				writer.write("\n");
+			}
+			writer.close();
+		} catch (IOException e){
+			e.printStackTrace();
+		}
+	}
+	
+	public void AddMessage(String Type, String Description, String State, String TimeStamp, String IPAddress){
 		Vector<String> Row=new Vector<String>();
 		Row.add(Type);
 		Row.add(Description);
 		Row.add(State);
+		Row.add(TimeStamp);
 		Row.add(IPAddress);
 		BufferedMessage.add(Row);
 		int index=BufferedMessage.size()-1;
@@ -195,25 +256,8 @@ public class ServerFrame extends JFrame{
 		if(type==CurrentType||CurrentType==0){
 			//添加数据
 			model.addRow(Row);
-			
-			//修改表格行颜色
-			DefaultTableCellRenderer dtc=new DefaultTableCellRenderer(){
-				public Component getTableCellRendererComponent(JTable table,Object value,boolean isSelected,boolean hasFocus,int row,int column){
-					if(MessageTable.getModel().getValueAt(row, 2).equals("Fail")){
-						setForeground(Color.RED);
-					}
-					else if(MessageTable.getModel().getValueAt(row, 2).equals("Success")){
-						setForeground(Color.GREEN);
-					}
-					else
-						setForeground(Color.BLACK);
-					return super.getTableCellRendererComponent(table,value,isSelected,hasFocus,row,column);
-				}
-			};
-			for(int i=0;i<MessageTable.getColumnCount();i++){
-				MessageTable.getColumnModel().getColumn(i).setCellRenderer(dtc);
-			}
-			
+			//刷新表格
+			RefreshTableFontColor();
 		}
 	}
 	

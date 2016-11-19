@@ -6,6 +6,8 @@ import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import com.njucs.dictionary.modle.Request;
 import com.njucs.dictionary.modle.Response;
@@ -43,6 +45,7 @@ public class Server {
 		}finally{
 			try {
 				serverSocket.close();
+				serverframe.close();
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -62,15 +65,16 @@ public class Server {
 	
 	private Response HandleRequest(Request request, String IPAddr){
 		Response response=new Response(100,"请求号码错误");
+		SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		switch(request.getNo()){
 		case 1:{
 			try {
 				response=service.VerifyPassword(request.getUser().getUsername(), request.getUser().getPassword());
 				if(response.getNo()==100){
-					serverframe.AddMessage("Login", "ID:"+request.getUser().getUsername(), "Success", IPAddr);
+					serverframe.AddMessage("Login", "ID:"+request.getUser().getUsername(), "Success", sdf.format(new Date()), IPAddr);
 				}
 				else{
-					serverframe.AddMessage("Login", "ID:"+request.getUser().getUsername(), "Fail", IPAddr);
+					serverframe.AddMessage("Login", "ID:"+request.getUser().getUsername(), "Fail", sdf.format(new Date()), IPAddr);
 				}
 			} catch (SQLException e) {
 				e.printStackTrace();
@@ -81,10 +85,10 @@ public class Server {
 			try{
 				response=service.Register(request.getUser().getUsername(), request.getUser().getPassword(), request.getUser().getEmail());
 				if(response.getNo()==200){
-					serverframe.AddMessage("Register", "ID:"+request.getUser().getUsername(), "Success", IPAddr);
+					serverframe.AddMessage("Register", "ID:"+request.getUser().getUsername(), "Success", sdf.format(new Date()), IPAddr);
 				}
 				else{
-					serverframe.AddMessage("Register", "ID:"+request.getUser().getUsername(), "Fail", IPAddr);
+					serverframe.AddMessage("Register", "ID:"+request.getUser().getUsername(), "Fail", sdf.format(new Date()), IPAddr);
 				}
 			} catch (SQLException e) {
 				e.printStackTrace();
