@@ -18,9 +18,9 @@ import java.sql.Connection;
  */
 
 public class DBOption {
-	private final String Url="jdbc:mysql://localhost:3306/count?useUnicode=true&characterEncoding=utf-8&useSSL=true";
-	private final String Username="zwj";
-	private final String Password="19960604zhang";
+	private final String Url="jdbc:mysql://localhost:3306/webdictionary?useUnicode=true&characterEncoding=utf-8&useSSL=true";
+	private final String Username="WebDic";
+	private final String Password="WebDic";
 	
 	private Connection conn;
 	private PreparedStatement pst;
