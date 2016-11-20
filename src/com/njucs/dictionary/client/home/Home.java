@@ -17,7 +17,7 @@ import com.njucs.dictionary.client.search.Youdao;
 public class Home extends JFrame {
 	private static final long serialVersionUID = -7095027738615460603L;
 	
-	private Font font=new Font("微软雅黑", Font.PLAIN, 20);
+	private Font font=new Font("微软雅黑", Font.PLAIN, 18);
 	private JPanel descriptionPanel;
 	public static TranslatePanel baidu, youdao, jinshan;
 	
@@ -37,7 +37,7 @@ public class Home extends JFrame {
 	private JPanel SearchPanel(){
 		JPanel searchPanel=new JPanel();
 		JLabel searchLabel=new JLabel(new ImageIcon("res/search.png"));
-		JTextField searchField=new JTextField(35);
+		JTextField searchField=new JTextField(30);
 		searchField.setFont(font);
 		JButton searchButton=new JButton("搜索");
 		searchButton.setFont(font);
@@ -73,7 +73,7 @@ public class Home extends JFrame {
 
 	// 复选面板
 	private JPanel CheckPanel(){
-		String space="                       ";
+		String space="                                      ";
 		JPanel checkPanel=new JPanel();
 		JCheckBox checkBoxBaidu=new JCheckBox("百度"+space);
 		JCheckBox checkBoxYoudao=new JCheckBox("有道"+space);
@@ -156,7 +156,7 @@ public class Home extends JFrame {
 	public static void Show(){
 		Home frame=new Home();
 		frame.setTitle("WebDictionary");
-		frame.setSize(800, 850);
+		frame.setSize(650, 660);
 		frame.setResizable(false);
 		frame.setLocationRelativeTo(null);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

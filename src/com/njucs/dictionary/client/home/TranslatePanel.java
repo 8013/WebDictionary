@@ -9,11 +9,11 @@ import javax.swing.*;
 public class TranslatePanel extends JPanel{
 	private static final long serialVersionUID = 6776279784085225536L;
 	
-	private int height=8,width=35;
+	private int height=7,width=30;
 	private boolean flag=false;
 	private String name;
 	private Color background=new Color(245, 245, 245);
-	private Font font=new Font("微软雅黑", Font.PLAIN, 20);
+	private Font font=new Font("微软雅黑", Font.PLAIN, 18);
 	private ImageIcon like=new ImageIcon("res/like.png");
 	private ImageIcon dislike=new ImageIcon("res/dislike.png");
 	private JLabel likeLabel;

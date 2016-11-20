@@ -45,7 +45,7 @@ public class ServerFrame extends JFrame{
 	private Vector<Integer>[] MessageIndex;
 	private Vector<String> ColumnNames;
 	private int CurrentType=0;
-	private final String[] TYPE={"All","Login","Logout","Register","Like","Cancellike"};
+	private final String[] TYPE={"All","Login","Logout","Register","Like","Cancellike","Searchlikenum"};
 	
 	public ServerFrame(){
 		super();

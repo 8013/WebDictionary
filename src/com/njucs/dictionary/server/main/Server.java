@@ -95,6 +95,27 @@ public class Server {
 			}
 			break;
 		}
+		case 3:{
+			try{
+				response=service.GetLikeNum(request.getWord(), request.getUser().getUsername());
+				serverframe.AddMessage("Searchlikenum", "ID:"+request.getUser().getUsername()+" Word:"+request.getWord(), "", sdf.format(new Date()), IPAddr);
+			} catch (SQLException e){
+				e.printStackTrace();
+			}
+			break;
+		}
+		case 4:{
+			try{
+				response=service.UpdateLikeNum(request.getUser().getUsername(), request.getWord(), request.getLike());
+				if(response.getNo()==301)
+					serverframe.AddMessage("Like", "ID:"+request.getUser().getUsername()+" Word:"+request.getWord(), "", sdf.format(new Date()), IPAddr);
+				else
+					serverframe.AddMessage("Cancellike", "ID:"+request.getUser().getUsername()+" Word:"+request.getWord(), "", sdf.format(new Date()), IPAddr);
+			} catch(SQLException e){
+				e.printStackTrace();
+			}
+			break;
+		}
 		default:break;
 		}
 		return response;
