@@ -5,7 +5,7 @@ import com.njucs.dictionary.client.login.Login;
 
 public class Client {
 	
-	private static boolean debug=true;
+	private static boolean debug=false;
 	
 	public static void main(String[] args) {
 		if(debug){

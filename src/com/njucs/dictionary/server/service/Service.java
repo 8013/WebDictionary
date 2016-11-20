@@ -36,7 +36,7 @@ public class Service extends DBOption{
 		if(res.next())
 			return new Response(201,"该账号已存在");
 		else{
-			sql="insert into diccount(id,password,email) values(?,?,?)";
+			sql="insert into account(id,password,email) values(?,?,?)";
 			String[] params={id,password,email};
 			ExcuteUpdate(sql, params);
 			return new Response(200,"注册成功");
