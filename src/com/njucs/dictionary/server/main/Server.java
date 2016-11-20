@@ -63,18 +63,19 @@ public class Server {
 		serverframe.SetOnlineNum(OnlineNum);
 	}
 	
-	private Response HandleRequest(Request request, String IPAddr){
+	private Response HandleRequest(Request request, String IPAddr, String id){
 		Response response=new Response(100,"请求号码错误");
 		SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		switch(request.getNo()){
 		case 1:{
 			try {
-				response=service.VerifyPassword(request.getUser().getUsername(), request.getUser().getPassword());
+				id=request.getUser().getUsername();
+				response=service.VerifyPassword(id, request.getUser().getPassword());
 				if(response.getNo()==100){
-					serverframe.AddMessage("Login", "ID:"+request.getUser().getUsername(), "Success", sdf.format(new Date()), IPAddr);
+					serverframe.AddMessage("Login", "ID:"+id, "Success", sdf.format(new Date()), IPAddr);
 				}
 				else{
-					serverframe.AddMessage("Login", "ID:"+request.getUser().getUsername(), "Fail", sdf.format(new Date()), IPAddr);
+					serverframe.AddMessage("Login", "ID:"+id, "Fail", sdf.format(new Date()), IPAddr);
 				}
 			} catch (SQLException e) {
 				e.printStackTrace();
@@ -83,12 +84,13 @@ public class Server {
 		}
 		case 2:{
 			try{
-				response=service.Register(request.getUser().getUsername(), request.getUser().getPassword(), request.getUser().getEmail());
+				id=request.getUser().getUsername();
+				response=service.Register(id, request.getUser().getPassword(), request.getUser().getEmail());
 				if(response.getNo()==200){
-					serverframe.AddMessage("Register", "ID:"+request.getUser().getUsername(), "Success", sdf.format(new Date()), IPAddr);
+					serverframe.AddMessage("Register", "ID:"+id, "Success", sdf.format(new Date()), IPAddr);
 				}
 				else{
-					serverframe.AddMessage("Register", "ID:"+request.getUser().getUsername(), "Fail", sdf.format(new Date()), IPAddr);
+					serverframe.AddMessage("Register", "ID:"+id, "Fail", sdf.format(new Date()), IPAddr);
 				}
 			} catch (SQLException e) {
 				e.printStackTrace();
@@ -97,8 +99,8 @@ public class Server {
 		}
 		case 3:{
 			try{
-				response=service.GetLikeNum(request.getWord(), request.getUser().getUsername());
-				serverframe.AddMessage("Searchlikenum", "ID:"+request.getUser().getUsername()+" Word:"+request.getWord(), "", sdf.format(new Date()), IPAddr);
+				response=service.GetLikeNum(request.getWord(),id);
+				serverframe.AddMessage("Searchlikenum", "ID:"+id+" Word:"+request.getWord(), "", sdf.format(new Date()), IPAddr);
 			} catch (SQLException e){
 				e.printStackTrace();
 			}
@@ -106,11 +108,11 @@ public class Server {
 		}
 		case 4:{
 			try{
-				response=service.UpdateLikeNum(request.getUser().getUsername(), request.getWord(), request.getLike());
+				response=service.UpdateLikeNum(id,request.getWord(), request.getLike());
 				if(response.getNo()==301)
-					serverframe.AddMessage("Like", "ID:"+request.getUser().getUsername()+" Word:"+request.getWord(), "", sdf.format(new Date()), IPAddr);
+					serverframe.AddMessage("Like", "ID:"+id+" Word:"+request.getWord(), "", sdf.format(new Date()), IPAddr);
 				else
-					serverframe.AddMessage("Cancellike", "ID:"+request.getUser().getUsername()+" Word:"+request.getWord(), "", sdf.format(new Date()), IPAddr);
+					serverframe.AddMessage("Cancellike", "ID:"+id+" Word:"+request.getWord(), "", sdf.format(new Date()), IPAddr);
 			} catch(SQLException e){
 				e.printStackTrace();
 			}
@@ -135,9 +137,11 @@ public class Server {
 		
 		private ObjectInputStream fromClient;
 		private ObjectOutputStream toClient;
+		private String id;
 
 		public HandleARequest(Socket socket){
 			this.socket=socket;
+			id="123456";
 		}
 		
 		@Override
@@ -147,11 +151,12 @@ public class Server {
 				Response response;
 				toClient=new ObjectOutputStream(socket.getOutputStream());
 				String IPAddr=socket.getInetAddress().getHostAddress();
+				//id=((Request)fromClient.readObject()).getUser().getUsername();
 				while(true){
 					//serverframe.AddMessage("Client IP:"+socket.getInetAddress().getHostAddress(),serverframe.GetTypeIndex("all"));
 					Request request;
 					request = (Request)fromClient.readObject();
-					response=HandleRequest(request, IPAddr);
+					response=HandleRequest(request, IPAddr, id);
 					toClient.writeObject(response);
 					try{
 						socket.sendUrgentData(0);

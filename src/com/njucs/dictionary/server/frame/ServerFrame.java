@@ -63,6 +63,7 @@ public class ServerFrame extends JFrame{
 		this.setVisible(true);
 		this.addWindowListener(new CloseWindow());
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.setResizable(false);
 		ServerStart();
 	}
 	
@@ -152,13 +153,13 @@ public class ServerFrame extends JFrame{
 	
 	private JLabel SetLabelBottom(){
 		labelbottom=new JLabel("Current Online Client Num: 0");
-		labelbottom.setBounds(0,340,600,20);
+		labelbottom.setBounds(0,350,600,20);
 		return labelbottom;
 	}
 	
 	private JScrollPane SetContent(){
 		Content=new JScrollPane();
-		Content.setBounds(0, 20, 600, 320);
+		Content.setBounds(0, 20, 600, 330);
 		Content.setViewportView(SetMessageTable());
 		return Content;
 	}
@@ -231,7 +232,7 @@ public class ServerFrame extends JFrame{
 				for(int j=0;j<BufferedMessage.get(i).size();j++){
 					writer.write(BufferedMessage.get(i).get(j)+"\t");
 				}
-				writer.write("\n");
+				writer.write("\r\n");
 			}
 			writer.close();
 		} catch (IOException e){
