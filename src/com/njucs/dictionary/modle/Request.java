@@ -20,8 +20,9 @@ public class Request implements Serializable{
 	private Like like;
 	
 	// 更新点赞数时用的请求
-	public Request(int no, Like like){
+	public Request(int no, String word, Like like){
 		this.no=no;
+		this.word=word;
 		this.like=like;
 	}
 	

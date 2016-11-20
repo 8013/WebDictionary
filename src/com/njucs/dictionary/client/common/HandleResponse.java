@@ -12,6 +12,7 @@ import com.njucs.dictionary.modle.*;
 public class HandleResponse {
 	
 	private static ImageIcon dislike=new ImageIcon("res/dislike.png");
+	private static ImageIcon like=new ImageIcon("res/like.png");
 	
 	public static void Handle(Response response){
 		// 登陆成功
@@ -24,15 +25,20 @@ public class HandleResponse {
 			Message.Show("注册成功，请返回登录界面登录！");
 		}
 		else if(response.getNo()==300){
-			Like like=response.getLike();
-			Home.baidu.getLikeLabel().setIcon(dislike);
-			Home.youdao.getLikeLabel().setIcon(dislike);
-			Home.jinshan.getLikeLabel().setIcon(dislike);
-			Home.baidu.getLikeLabel().setText(like.getBaidu()>9 ? ""+like.getBaidu() : "0"+like.getBaidu());
-			Home.youdao.getLikeLabel().setText(like.getYoudao()>9 ? ""+like.getYoudao() : "0"+like.getYoudao());
-			Home.jinshan.getLikeLabel().setText(like.getJinshan()>9 ? ""+like.getJinshan() : "0"+like.getJinshan());
+			Like likes=response.getLike();
+			Home.baidu.setFlag(likes.getBaidulike());			
+			Home.baidu.getLikeLabel().setIcon(likes.getBaidulike()>0?like:dislike);
+			Home.baidu.getLikeLabel().setText(likes.getBaidu()+"");
+			
+			Home.youdao.setFlag(likes.getYoudaolike());
+			Home.youdao.getLikeLabel().setIcon(likes.getYoudaolike()>0?like:dislike);
+			Home.youdao.getLikeLabel().setText(likes.getYoudao()+"");
+			
+			Home.jinshan.setFlag(likes.getJinshanlike());
+			Home.jinshan.getLikeLabel().setIcon(likes.getJinshanlike()>0?like:dislike);
+			Home.jinshan.getLikeLabel().setText(likes.getJinshan()+"");
 		}
-		else if(response.getNo()==301){
+		else if(response.getNo()==301||response.getNo()==302){
 			;
 		}
 		else{

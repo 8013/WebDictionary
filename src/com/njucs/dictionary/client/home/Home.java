@@ -7,6 +7,7 @@ import java.awt.event.ActionListener;
 
 import javax.swing.*;
 
+import com.njucs.dictionary.client.search.Baidu;
 import com.njucs.dictionary.client.search.Jinshan;
 import com.njucs.dictionary.client.search.Youdao;
 /**
@@ -52,8 +53,13 @@ public class Home extends JFrame {
 					return ;
 				
 				// 联网搜索
+				baidu.setWord(word);
+				baidu.getTextArea().setText(Baidu.Translate(word));
+				baidu.getTextArea().setCaretPosition(0);
+				youdao.setWord(word);
 				youdao.getTextArea().setText(Youdao.Translate(word));
 				youdao.getTextArea().setCaretPosition(0);
+				jinshan.setWord(word);
 				jinshan.getTextArea().setText(Jinshan.Translate(word));
 				jinshan.getTextArea().setCaretPosition(0);
 				

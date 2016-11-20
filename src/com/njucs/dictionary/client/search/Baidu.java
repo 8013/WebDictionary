@@ -94,12 +94,12 @@ public class Baidu {
 		try {
 			FetchHTML(word);
 			Vector<String> v=getPronounce();
-			for(int i=0;i<v.size();i++){
-				res+=v.get(i);
-			}
+//			for(int i=0;i<v.size();i++){
+//				res+=v.get(i);
+//			}
 			v=getTranslation();
 			for(int i=0;i<v.size();i++){
-				res+=v.get(i);
+				res+=v.get(i)+"\n";
 			}
 		} catch (IOException e) {
 			e.printStackTrace();

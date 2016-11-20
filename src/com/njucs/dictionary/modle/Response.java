@@ -14,9 +14,9 @@ import java.io.Serializable;
  * 		邮箱已被使用			202
  * 查找：
  * 		获取单词点赞数		300	返回编号和一个Like对象
- * 		更新点赞数			
- * 				点赞		301	返回编号和一个空的description
- * 				取消赞		302	返回编号和一个空的description
+ * 		更新点赞数：		
+ * 					点赞			301	返回编号和一个空的description
+ * 					取消赞		302	返回编号和一个空的description
  * @author zhe
  *
  */

@@ -6,12 +6,18 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import javax.swing.*;
 
+import com.njucs.dictionary.client.common.SendRequest;
+import com.njucs.dictionary.modle.Like;
+import com.njucs.dictionary.modle.Request;
+
 public class TranslatePanel extends JPanel{
 	private static final long serialVersionUID = 6776279784085225536L;
 	
 	private int height=7,width=30;
-	private boolean flag=false;
+	private boolean flag;
+	@SuppressWarnings("unused")
 	private String name;
+	private String word;
 	private Color background=new Color(245, 245, 245);
 	private Font font=new Font("微软雅黑", Font.PLAIN, 18);
 	private ImageIcon like=new ImageIcon("res/like.png");
@@ -54,10 +60,40 @@ public class TranslatePanel extends JPanel{
 				if(flag==false){
 					likeLabel.setIcon(like);
 					flag=true;
+					Like like = null;
+					switch(name){
+					case "百度":
+						like=new Like(0, 0, 0, 1, 0, 0);
+						break;
+					case "有道":
+						like=new Like(0, 0, 0, 0, 1, 0);
+						break;
+					case "金山":
+						like=new Like(0, 0, 0, 0, 0, 1);
+						break;
+					}
+					likeLabel.setText(String.valueOf(Integer.parseInt(likeLabel.getText())+1));
+					Request request=new Request(4, word, like);
+					SendRequest.Send(request);
 				}
 				else{
 					likeLabel.setIcon(dislike);
 					flag=false;
+					Like like = null;
+					switch(name){
+					case "百度":
+						like=new Like(0, 0, 0, -1, 0, 0);
+						break;
+					case "有道":
+						like=new Like(0, 0, 0, 0, -1, 0);
+						break;
+					case "金山":
+						like=new Like(0, 0, 0, 0, 0, -1);
+						break;
+					}
+					likeLabel.setText(String.valueOf(Integer.parseInt(likeLabel.getText())-1));
+					Request request=new Request(4, word, like);
+					SendRequest.Send(request);
 				}
 			}
 		});
@@ -72,8 +108,15 @@ public class TranslatePanel extends JPanel{
 		return likeLabel;
 	}
 	
-	public String getName(){
-		return name;
+	public void setWord(String word) {
+		this.word = word;
 	}
 	
+	public void setFlag(int flag){
+		if(flag==1)
+			this.flag=true;
+		else{
+			this.flag=false;
+		}
+	}
 }
