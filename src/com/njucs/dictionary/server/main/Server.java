@@ -8,7 +8,6 @@ import java.net.Socket;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
 import com.njucs.dictionary.modle.Request;
 import com.njucs.dictionary.modle.Response;
 import com.njucs.dictionary.server.frame.ServerFrame;
@@ -62,73 +61,12 @@ public class Server {
 		OnlineNum--;
 		serverframe.SetOnlineNum(OnlineNum);
 	}
-	
-	private Response HandleRequest(Request request, String IPAddr, String id){
-		Response response=new Response(100,"请求号码错误");
-		SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		switch(request.getNo()){
-		case 1:{
-			try {
-				//id=request.getUser().getUsername();
-				response=service.VerifyPassword(id, request.getUser().getPassword());
-				if(response.getNo()==100){
-					serverframe.AddMessage("Login", "ID:"+id, "Success", sdf.format(new Date()), IPAddr);
-				}
-				else{
-					serverframe.AddMessage("Login", "ID:"+id, "Fail", sdf.format(new Date()), IPAddr);
-				}
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-			break;
-		}
-		case 2:{
-			try{
-				//id=request.getUser().getUsername();
-				response=service.Register(id, request.getUser().getPassword(), request.getUser().getEmail());
-				if(response.getNo()==200){
-					serverframe.AddMessage("Register", "ID:"+id, "Success", sdf.format(new Date()), IPAddr);
-				}
-				else{
-					serverframe.AddMessage("Register", "ID:"+id, "Fail", sdf.format(new Date()), IPAddr);
-				}
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-			break;
-		}
-		case 3:{
-			try{
-				response=service.GetLikeNum(request.getWord(),id);
-				serverframe.AddMessage("Searchlikenum", "ID:"+id+" Word:"+request.getWord(), "", sdf.format(new Date()), IPAddr);
-			} catch (SQLException e){
-				e.printStackTrace();
-			}
-			break;
-		}
-		case 4:{
-			try{
-				response=service.UpdateLikeNum(id,request.getWord(), request.getLike());
-				if(response.getNo()==301)
-					serverframe.AddMessage("Like", "ID:"+id+" Word:"+request.getWord(), "", sdf.format(new Date()), IPAddr);
-				else
-					serverframe.AddMessage("Cancellike", "ID:"+id+" Word:"+request.getWord(), "", sdf.format(new Date()), IPAddr);
-			} catch(SQLException e){
-				e.printStackTrace();
-			}
-			break;
-		}
-		default:break;
-		}
-		return response;
-	}
-	
+		
 	private void mainloop() throws IOException, ClassNotFoundException{
 		while(true){
 			Socket socket=serverSocket.accept();
 			HandleARequest handleArequest=new HandleARequest(socket);
 			new Thread(handleArequest).start();
-			AddOnlineNum();
 		}
 	}
 	
@@ -157,6 +95,12 @@ public class Server {
 					request = (Request)fromClient.readObject();
 					if(id==null&&request.getUser().getUsername()!=null){
 						id=request.getUser().getUsername();
+						AddOnlineNum();
+						try {
+							service.UpdateUserState(id, 1);
+						} catch (SQLException e) {
+							e.printStackTrace();
+						}
 					}
 					response=HandleRequest(request, IPAddr, id);
 					toClient.writeObject(response);
@@ -171,8 +115,77 @@ public class Server {
 			} catch (ClassNotFoundException e){
 				e.printStackTrace();
 			}
-			MinusOnlineNum();
 		}
 		
+		private Response HandleRequest(Request request, String IPAddr, String id){
+			Response response=new Response(100,"请求号码错误");
+			SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			switch(request.getNo()){
+			case 1:{
+				try {
+					//id=request.getUser().getUsername();
+					response=service.VerifyPassword(id, request.getUser().getPassword());
+					if(response.getNo()==100){
+						serverframe.AddMessage("Login", "ID:"+id, "Success", sdf.format(new Date()), IPAddr);
+					}
+					else{
+						serverframe.AddMessage("Login", "ID:"+id, "Fail", sdf.format(new Date()), IPAddr);
+					}
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+				break;
+			}
+			case 2:{
+				try{
+					//id=request.getUser().getUsername();
+					response=service.Register(id, request.getUser().getPassword(), request.getUser().getEmail());
+					if(response.getNo()==200){
+						serverframe.AddMessage("Register", "ID:"+id, "Success", sdf.format(new Date()), IPAddr);
+					}
+					else{
+						serverframe.AddMessage("Register", "ID:"+id, "Fail", sdf.format(new Date()), IPAddr);
+					}
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+				break;
+			}
+			case 3:{
+				try{
+					response=service.GetLikeNum(request.getWord(),id);
+					serverframe.AddMessage("Searchlikenum", "ID:"+id+" Word:"+request.getWord(), "", sdf.format(new Date()), IPAddr);
+				} catch (SQLException e){
+					e.printStackTrace();
+				}
+				break;
+			}
+			case 4:{
+				try{
+					response=service.UpdateLikeNum(id,request.getWord(), request.getLike());
+					if(response.getNo()==301)
+						serverframe.AddMessage("Like", "ID:"+id+" Word:"+request.getWord(), "", sdf.format(new Date()), IPAddr);
+					else
+						serverframe.AddMessage("Cancellike", "ID:"+id+" Word:"+request.getWord(), "", sdf.format(new Date()), IPAddr);
+				} catch(SQLException e){
+					e.printStackTrace();
+				}
+				break;
+			}
+			case 5:{
+				MinusOnlineNum();
+				try {
+					service.UpdateUserState(id, 0);
+					serverframe.AddMessage("Logout", "ID:"+id, "Success", sdf.format(new Date()), IPAddr);
+					id=null;
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+				break;
+			}
+			default:break;
+			}
+			return response;
+		}
 	}
 }

@@ -89,6 +89,110 @@ public class Baidu {
 		return Translation;
 	}
 	
+	private static Vector<String> GetMoreInfo(){
+		Vector<String> resbuffer=new Vector<String>();
+		String starttag="<div class=\"en-content tab-content\">";
+		String input=contentbuffer.substring(contentbuffer.indexOf(starttag)+starttag.length());
+		input=input.substring(0,input.indexOf("</div>"));
+		//System.out.println(input);
+		//String reg="<ul><li><h3><span class=\"collins-num\">.*?</ul>";
+		String reg="<li><h3><span class=\"collins-num\">.*?</ul>";
+		Matcher m=Pattern.compile(reg).matcher(input);
+		while(m.find()){
+			//System.out.println(m.group());
+			String buffer=m.group();
+			String s=new String();
+			String reginside="<span class=\"collins-num\">.*?</span>";
+			Matcher minside=Pattern.compile(reginside).matcher(buffer);
+			if(minside.find()){
+				s+=minside.group().substring(minside.group().indexOf(">")+1,minside.group().indexOf("</span>"));
+				s+=" ";
+				buffer=buffer.substring(buffer.indexOf("</span>")+"</span>".length());
+			}
+			reginside="<span class=\"en-cx-tip\".*?>.*?</span>";
+			minside=Pattern.compile(reginside).matcher(buffer);
+			if(minside.find()){
+				//词性（中）
+				s+=minside.group().substring(minside.group().indexOf("content=\"")+"content=\"".length(), minside.group().indexOf("\">"));
+				s+="\t";
+				buffer=buffer.substring(buffer.indexOf("\">")+"\">".length());
+				//词性（英）
+				s+=minside.group().substring(minside.group().indexOf(">")+1, minside.group().indexOf("</span>"));
+				s+="\n";
+				buffer=buffer.substring(buffer.indexOf("</span>")+"</span>".length());
+			}
+			reginside="<span class=\"collins-cnmeans\">.*?</span>";
+			minside=Pattern.compile(reginside).matcher(buffer);
+			if(minside.find()){
+				//System.out.println(minside.group());
+				s+="中文释义: ";
+				s+=minside.group().substring(minside.group().indexOf(">")+1, minside.group().indexOf("</span>"));
+				s+="\n";
+				buffer=buffer.substring(buffer.indexOf("</span>")+"</span>".length());
+			}
+
+			reginside="<span>.*?</span>";
+			minside=Pattern.compile(reginside).matcher(buffer);
+			if(minside.find()){
+				//System.out.println(minside.group());
+				s+="英文释义: ";
+				String temp_s=minside.group().substring(minside.group().indexOf("<span>")+"<span>".length(), minside.group().indexOf("</span>"));
+				s+=temp_s.replace("<b>", "").replace("</b>", "");
+				s+="\n";
+				buffer=buffer.substring(buffer.indexOf("</span>")+"</span>".length());
+			}
+			
+			//获得语法信息
+			reginside="<a class=\"en-yf-tip\".*?</a>";
+			minside=Pattern.compile(reginside).matcher(buffer);
+			if(minside.find()){
+				//System.out.println(minside.group());
+				String temp_s=minside.group().substring(minside.group().indexOf("content=\"")+"content=\"".length(), minside.group().indexOf("\" href"));
+				s+=temp_s.replace("<br>", "  ");
+				buffer=buffer.substring(buffer.indexOf("</a>")+"</a>".length());
+				//System.out.println(buffer);
+			}
+			s+="\n";
+			
+			//获得例句
+			//s+="例句:\n";
+			reginside="<li><p>.*?</p></li>";
+			minside=Pattern.compile(reginside).matcher(buffer);
+			for(int i=0;minside.find();i++){
+				//System.out.println(minside.group());
+				String temp_s=minside.group();
+				if(i==0&&temp_s.indexOf("<span>")!=-1){
+					s+=temp_s.substring(temp_s.indexOf("<p>")+"<p>".length(), temp_s.indexOf("<span>"));
+				}
+				else{
+					s+=temp_s.substring(temp_s.indexOf("<p>")+"<p>".length(), temp_s.indexOf("</p>"));
+				}
+				temp_s=temp_s.substring(temp_s.indexOf("</p>")+"</p>".length());
+				s+="\t";
+				s+=temp_s.substring(temp_s.indexOf("<p>")+"<p>".length(), temp_s.indexOf("</p>"));
+				s+="\n";
+				buffer=buffer.substring(buffer.indexOf("</li>")+"</li>".length());
+				//time++;
+			}
+			//System.out.println(buffer);
+			reginside="<li style=\"display:none\">.*?</li>";
+			minside=Pattern.compile(reginside).matcher(buffer);
+			while(minside.find()){
+				String temp_s=minside.group();
+				s+=temp_s.substring(temp_s.indexOf("<p>")+"<p>".length(), temp_s.indexOf("</p>"));
+				temp_s=temp_s.substring(temp_s.indexOf("</p>")+"</p>".length());
+				s+="\t";
+				s+=temp_s.substring(temp_s.indexOf("<p>")+"<p>".length(), temp_s.indexOf("</p>"));
+				s+="\n";
+				buffer=buffer.substring(buffer.indexOf("</li>")+"</li>".length());
+			}
+			//System.out.println(s);
+			//return s;
+			resbuffer.add(s);
+		}
+		return resbuffer;
+	}
+	
 	public static String Translate(String word){
 		String res=new String();
 		try {
@@ -98,6 +202,10 @@ public class Baidu {
 //				res+=v.get(i);
 //			}
 			v=getTranslation();
+			for(int i=0;i<v.size();i++){
+				res+=v.get(i)+"\n";
+			}
+			v=GetMoreInfo();
 			for(int i=0;i<v.size();i++){
 				res+=v.get(i)+"\n";
 			}

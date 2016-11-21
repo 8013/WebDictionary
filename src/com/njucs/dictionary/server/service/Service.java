@@ -5,6 +5,7 @@ import java.sql.SQLException;
 
 import com.njucs.dictionary.modle.Like;
 import com.njucs.dictionary.modle.Response;
+import com.njucs.dictionary.modle.UserTable;
 import com.njucs.dictionary.server.dboption.DBOption;
 
 public class Service extends DBOption{
@@ -241,5 +242,26 @@ public class Service extends DBOption{
 			return new Response(301,"");
 		else
 			return new Response(302,"");
+	}
+
+	public Response GetUserTable() throws SQLException{
+		UserTable usertable=new UserTable();
+		String sql="select * from account";
+		ResultSet res=executeQueryRS(sql, null);
+		while(res!=null&&res.next()){
+			String user=res.getString("id");
+			int state=res.getInt("state");
+			usertable.Add(user,state);
+		}
+		return new Response(400,"");
+	}
+
+	public void UpdateUserState(String id, int state) throws SQLException{
+		String sql="select * from account where id='"+id+"'";
+		ResultSet res=executeQueryRS(sql, null);
+		if(res.next()){
+			sql="update account set value="+state+" where id='"+id+"'";
+			ExcuteUpdate(sql, null);
+		}
 	}
 }
