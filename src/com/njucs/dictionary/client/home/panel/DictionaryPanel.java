@@ -30,7 +30,8 @@ public class DictionaryPanel extends JPanel{
 	
 	private JPanel descriptionPanel;
 	private TranslatePanel baidu, youdao, jinshan;
-
+	private JCheckBox checkBoxBaidu, checkBoxYoudao, checkBoxJinshan;
+	
 	// 构造一个词典的面板，包括搜索框，复选框和翻译区域
 	public DictionaryPanel(){
 		this.setLayout(new FlowLayout(FlowLayout.LEFT, 0, 0));
@@ -86,9 +87,9 @@ public class DictionaryPanel extends JPanel{
 	private JPanel CheckPanel(){
 		String space="                                      ";
 		JPanel checkPanel=new JPanel();
-		JCheckBox checkBoxBaidu=new JCheckBox("百度"+space);
-		JCheckBox checkBoxYoudao=new JCheckBox("有道"+space);
-		JCheckBox checkBoxJinshan=new JCheckBox("金山");
+		checkBoxBaidu=new JCheckBox("百度"+space);
+		checkBoxYoudao=new JCheckBox("有道"+space);
+		checkBoxJinshan=new JCheckBox("金山");
 			
 		checkBoxBaidu.setFont(font);
 		checkBoxBaidu.setSelected(true);
@@ -103,11 +104,11 @@ public class DictionaryPanel extends JPanel{
 			public void actionPerformed(ActionEvent e) {
 				if(!checkBoxBaidu.isSelected()){
 					descriptionPanel.remove(baidu);
-					descriptionPanel.repaint();
+					descriptionPanel.revalidate();
 				}
 				else{
 					descriptionPanel.add(baidu);
-					descriptionPanel.repaint();
+					descriptionPanel.revalidate();
 				}
 			}
 		});
@@ -117,11 +118,11 @@ public class DictionaryPanel extends JPanel{
 			public void actionPerformed(ActionEvent e) {
 				if(!checkBoxYoudao.isSelected()){
 					descriptionPanel.remove(youdao);
-					descriptionPanel.repaint();
+					descriptionPanel.revalidate();
 				}
 				else{
 					descriptionPanel.add(youdao);
-					descriptionPanel.repaint();
+					descriptionPanel.revalidate();
 				}
 			}
 		});
@@ -131,11 +132,11 @@ public class DictionaryPanel extends JPanel{
 			public void actionPerformed(ActionEvent e) {
 				if(!checkBoxJinshan.isSelected()){
 					descriptionPanel.remove(jinshan);
-					descriptionPanel.repaint();
+					descriptionPanel.revalidate();
 				}
 				else{
 					descriptionPanel.add(jinshan);
-					descriptionPanel.repaint();
+					descriptionPanel.revalidate();
 				}
 					
 			}
@@ -165,7 +166,72 @@ public class DictionaryPanel extends JPanel{
 
 	// 根据点赞数重新排列三个翻译面板
 	private	void Sort(Like likes){
+		descriptionPanel.remove(baidu);
+		descriptionPanel.remove(youdao);
+		descriptionPanel.remove(jinshan);
 		
+		int a=likes.getBaidu(),b=likes.getYoudao(),c=likes.getJinshan();
+		
+		if(a>=b && a>=c){
+			if(checkBoxBaidu.isSelected())
+				descriptionPanel.add(baidu);
+			if(b>=c){
+				if(checkBoxYoudao.isSelected())
+					descriptionPanel.add(youdao);
+				if(checkBoxJinshan.isSelected())
+					descriptionPanel.add(jinshan);
+				descriptionPanel.repaint();
+				return;
+			}
+			else{
+				if(checkBoxJinshan.isSelected())
+					descriptionPanel.add(jinshan);
+				if(checkBoxYoudao.isSelected())
+					descriptionPanel.add(youdao);
+				descriptionPanel.repaint();
+				return;
+			}
+		}
+		if(b>=a && b>=c){
+			if(checkBoxYoudao.isSelected())
+				descriptionPanel.add(youdao);
+			if(a>=c){
+				if(checkBoxBaidu.isSelected())
+					descriptionPanel.add(baidu);
+				if(checkBoxJinshan.isSelected())
+					descriptionPanel.add(jinshan);
+				descriptionPanel.repaint();
+				return;
+			}
+			else{
+				if(checkBoxJinshan.isSelected())
+					descriptionPanel.add(jinshan);
+				if(checkBoxBaidu.isSelected())
+					descriptionPanel.add(baidu);
+				descriptionPanel.repaint();
+				return;
+			}
+		}
+		if(c>=a && c>=b){
+			if(checkBoxJinshan.isSelected())
+				descriptionPanel.add(jinshan);
+			if(a>=b){
+				if(checkBoxBaidu.isSelected())
+					descriptionPanel.add(baidu);
+				if(checkBoxYoudao.isSelected())
+					descriptionPanel.add(youdao);
+				descriptionPanel.repaint();
+				return;
+			}
+			else{
+				if(checkBoxYoudao.isSelected())
+					descriptionPanel.add(youdao);
+				if(checkBoxBaidu.isSelected())	
+					descriptionPanel.add(baidu);
+				descriptionPanel.repaint();
+				return;
+			}
+		}
 	}
 	
 	// 更新翻译面板点赞标签的状态
