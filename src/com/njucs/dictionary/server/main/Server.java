@@ -69,7 +69,7 @@ public class Server {
 		switch(request.getNo()){
 		case 1:{
 			try {
-				id=request.getUser().getUsername();
+				//id=request.getUser().getUsername();
 				response=service.VerifyPassword(id, request.getUser().getPassword());
 				if(response.getNo()==100){
 					serverframe.AddMessage("Login", "ID:"+id, "Success", sdf.format(new Date()), IPAddr);
@@ -84,7 +84,7 @@ public class Server {
 		}
 		case 2:{
 			try{
-				id=request.getUser().getUsername();
+				//id=request.getUser().getUsername();
 				response=service.Register(id, request.getUser().getPassword(), request.getUser().getEmail());
 				if(response.getNo()==200){
 					serverframe.AddMessage("Register", "ID:"+id, "Success", sdf.format(new Date()), IPAddr);
@@ -137,11 +137,10 @@ public class Server {
 		
 		private ObjectInputStream fromClient;
 		private ObjectOutputStream toClient;
-		private String id;
+		private String id=null;
 
 		public HandleARequest(Socket socket){
 			this.socket=socket;
-			id="123456";
 		}
 		
 		@Override
@@ -156,6 +155,9 @@ public class Server {
 					//serverframe.AddMessage("Client IP:"+socket.getInetAddress().getHostAddress(),serverframe.GetTypeIndex("all"));
 					Request request;
 					request = (Request)fromClient.readObject();
+					if(id==null&&request.getUser().getUsername()!=null){
+						id=request.getUser().getUsername();
+					}
 					response=HandleRequest(request, IPAddr, id);
 					toClient.writeObject(response);
 					try{

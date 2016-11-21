@@ -150,7 +150,7 @@ public class Service extends DBOption{
 					num++;
 				else
 					num--;
-				sql="update dictionary set likenumber="+num+"where word='"+word+"' and type=0";
+				sql="update dictionary set likenumber="+num+" where word='"+word+"' and type=0";
 				ExcuteUpdate(sql, null);
 				sql="select * from likeid where word='"+word+"' and type=0 and id='"+id+"'";
 				res=executeQueryRS(sql, null);
@@ -183,7 +183,7 @@ public class Service extends DBOption{
 					num++;
 				else
 					num--;
-				sql="update dictionary set likenumber="+num+"where word='"+word+"' and type=1";
+				sql="update dictionary set likenumber="+num+" where word='"+word+"' and type=1";
 				ExcuteUpdate(sql, null);
 				sql="select * from likeid where word='"+word+"' and type=1 and id='"+id+"'";
 				res=executeQueryRS(sql, null);
@@ -216,7 +216,7 @@ public class Service extends DBOption{
 					num++;
 				else
 					num--;
-				sql="update dictionary set likenumber="+num+"where word='"+word+"' and type=2";
+				sql="update dictionary set likenumber="+num+" where word='"+word+"' and type=2";
 				ExcuteUpdate(sql, null);
 				sql="select * from likeid where word='"+word+"' and type=2 and id='"+id+"'";
 				res=executeQueryRS(sql, null);
