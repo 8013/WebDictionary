@@ -94,7 +94,7 @@ public class Service extends DBOption{
 				default:break;
 				}
 				sql="select * from likeid where word='"+word+"' and type="+type+" and id='"+id+"'";
-				executeQueryRS(sql, null);
+				res=executeQueryRS(sql, null);
 				if(res.next()){
 					switch(type){
 					case 0:like.setYoudaolike(1);break;
