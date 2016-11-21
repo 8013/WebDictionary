@@ -1,4 +1,4 @@
-package com.njucs.dictionary.client.home;
+package com.njucs.dictionary.client.home.tools;
 
 import java.util.regex.Pattern;
 

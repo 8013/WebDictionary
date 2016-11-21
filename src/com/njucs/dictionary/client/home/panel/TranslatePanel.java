@@ -1,4 +1,4 @@
-package com.njucs.dictionary.client.home;
+package com.njucs.dictionary.client.home.panel;
 
 import java.awt.Color;
 import java.awt.Font;
