@@ -24,7 +24,7 @@ public class DictionaryPanel extends JPanel{
 	private static final long serialVersionUID = -7589143892541083015L;
 	
 	private Font font=new Font("微软雅黑", Font.PLAIN, 18);
-	private Dimension size=new Dimension(650, 660);
+	private Dimension size=new Dimension(640, 640);
 	private ImageIcon dislike=new ImageIcon("res/dislike.png");
 	private ImageIcon like=new ImageIcon("res/like.png");
 	

@@ -12,7 +12,7 @@ public class HandleResponse {
 	public static void Handle(Response response){
 		// 登陆成功
 		if(response.getNo()==100){
-			Home.Show();
+			Home.Show(response.getDescription());
 			Login.Destroy();
 		}
 		// 注册成功

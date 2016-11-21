@@ -5,10 +5,11 @@ import java.io.Serializable;
 /**
  * 客户端发送的请求类，no表示请求的种类
  * 服务器端根据不同的no转向不同的处理
- * 登录	1
- * 注册	2
- * 获取点赞数 3
- * 更新点赞	4
+ * 登录				1
+ * 注册				2
+ * 获取点赞数	 	3
+ * 更新点赞		4
+ * 注销				5
  * @author zhe
  *
  */
@@ -32,7 +33,7 @@ public class Request implements Serializable{
 		this.word=word;
 	}
 	
-	// 用于登录注册时构造请求
+	// 用于登录，注册，注销时构造请求
 	public Request(int no, User user){
 		this.no=no;
 		this.user=user;

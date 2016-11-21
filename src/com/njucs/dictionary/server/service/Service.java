@@ -21,7 +21,8 @@ public class Service extends DBOption{
 		ResultSet res=executeQueryRS(sql, null);
 		if(res.next()){
 			if(password.equals(res.getString("password"))){
-				return new Response(100,"登陆成功");
+//				return new Response(100,"登陆成功");
+				return new Response(100, id);
 			}
 			else
 				return new Response(102,"密码错误");

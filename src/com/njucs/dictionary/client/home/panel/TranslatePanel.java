@@ -9,7 +9,13 @@ import javax.swing.*;
 import com.njucs.dictionary.client.common.SendRequest;
 import com.njucs.dictionary.modle.Like;
 import com.njucs.dictionary.modle.Request;
-
+/**
+ * 翻译面板
+ * 点赞时向服务器传递参数new Like(0,0,0,1,0,0);
+ * 前三位一直为0，后三位为1或-1取决于是点赞还是取消点赞，六个数字一定有5个0
+ * @author zhe
+ *
+ */
 public class TranslatePanel extends JPanel{
 	private static final long serialVersionUID = 6776279784085225536L;
 	

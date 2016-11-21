@@ -15,16 +15,20 @@ public class User implements Serializable{
 	private String email;
 	
 	// 重载的构造函数
-	// 3个参数
+	// 3个参数		注册
 	public User(String username, String password, String email){
 		this.setUsername(username);
 		this.setPassword(password);
 		this.setEmail(email);
 	}
-	// 2个参数
+	// 2个参数		登录
 	public User(String username, String password){
 		this.setUsername(username);
 		this.setPassword(password);
+	}
+	// 1个参数		注销
+	public User(String username){
+		this.setUsername(username);
 	}
 	
 	public String getUsername() {
