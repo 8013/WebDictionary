@@ -104,11 +104,11 @@ public class DictionaryPanel extends JPanel{
 			public void actionPerformed(ActionEvent e) {
 				if(!checkBoxBaidu.isSelected()){
 					descriptionPanel.remove(baidu);
-					descriptionPanel.revalidate();
+					descriptionPanel.repaint();
 				}
 				else{
 					descriptionPanel.add(baidu);
-					descriptionPanel.revalidate();
+					descriptionPanel.repaint();
 				}
 			}
 		});
@@ -118,11 +118,11 @@ public class DictionaryPanel extends JPanel{
 			public void actionPerformed(ActionEvent e) {
 				if(!checkBoxYoudao.isSelected()){
 					descriptionPanel.remove(youdao);
-					descriptionPanel.revalidate();
+					descriptionPanel.repaint();
 				}
 				else{
 					descriptionPanel.add(youdao);
-					descriptionPanel.revalidate();
+					descriptionPanel.repaint();
 				}
 			}
 		});
@@ -132,11 +132,11 @@ public class DictionaryPanel extends JPanel{
 			public void actionPerformed(ActionEvent e) {
 				if(!checkBoxJinshan.isSelected()){
 					descriptionPanel.remove(jinshan);
-					descriptionPanel.revalidate();
+					descriptionPanel.repaint();
 				}
 				else{
 					descriptionPanel.add(jinshan);
-					descriptionPanel.revalidate();
+					descriptionPanel.repaint();
 				}
 					
 			}
@@ -166,9 +166,8 @@ public class DictionaryPanel extends JPanel{
 
 	// 根据点赞数重新排列三个翻译面板
 	private	void Sort(Like likes){
-		descriptionPanel.remove(baidu);
-		descriptionPanel.remove(youdao);
-		descriptionPanel.remove(jinshan);
+		descriptionPanel.removeAll();
+		descriptionPanel.revalidate();
 		
 		int a=likes.getBaidu(),b=likes.getYoudao(),c=likes.getJinshan();
 		
@@ -180,19 +179,15 @@ public class DictionaryPanel extends JPanel{
 					descriptionPanel.add(youdao);
 				if(checkBoxJinshan.isSelected())
 					descriptionPanel.add(jinshan);
-				descriptionPanel.repaint();
-				return;
 			}
 			else{
 				if(checkBoxJinshan.isSelected())
 					descriptionPanel.add(jinshan);
 				if(checkBoxYoudao.isSelected())
 					descriptionPanel.add(youdao);
-				descriptionPanel.repaint();
-				return;
 			}
 		}
-		if(b>=a && b>=c){
+		else if(b>=a && b>=c){
 			if(checkBoxYoudao.isSelected())
 				descriptionPanel.add(youdao);
 			if(a>=c){
@@ -200,19 +195,15 @@ public class DictionaryPanel extends JPanel{
 					descriptionPanel.add(baidu);
 				if(checkBoxJinshan.isSelected())
 					descriptionPanel.add(jinshan);
-				descriptionPanel.repaint();
-				return;
 			}
 			else{
 				if(checkBoxJinshan.isSelected())
 					descriptionPanel.add(jinshan);
 				if(checkBoxBaidu.isSelected())
 					descriptionPanel.add(baidu);
-				descriptionPanel.repaint();
-				return;
 			}
 		}
-		if(c>=a && c>=b){
+		else {
 			if(checkBoxJinshan.isSelected())
 				descriptionPanel.add(jinshan);
 			if(a>=b){
@@ -220,18 +211,15 @@ public class DictionaryPanel extends JPanel{
 					descriptionPanel.add(baidu);
 				if(checkBoxYoudao.isSelected())
 					descriptionPanel.add(youdao);
-				descriptionPanel.repaint();
-				return;
 			}
 			else{
 				if(checkBoxYoudao.isSelected())
 					descriptionPanel.add(youdao);
 				if(checkBoxBaidu.isSelected())	
 					descriptionPanel.add(baidu);
-				descriptionPanel.repaint();
-				return;
 			}
 		}
+		descriptionPanel.revalidate();
 	}
 	
 	// 更新翻译面板点赞标签的状态

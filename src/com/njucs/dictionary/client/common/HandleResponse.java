@@ -1,6 +1,7 @@
 package com.njucs.dictionary.client.common;
 
 import com.njucs.dictionary.client.home.Home;
+import com.njucs.dictionary.client.home.tools.GetOnlineUsers;
 import com.njucs.dictionary.client.login.Login;
 import com.njucs.dictionary.modle.*;
 /**
@@ -19,11 +20,17 @@ public class HandleResponse {
 		else if(response.getNo()==200){
 			Message.Show("注册成功，请返回登录界面登录！");
 		}
+		// 获取点赞数
 		else if(response.getNo()==300){
 			Like likes=response.getLike();
 			Home.dictionaryPanel.UpdateLike(likes);
 		}
-		else if(response.getNo()==301||response.getNo()==302){
+		// 获取用户列表
+		else if(response.getNo()==310){
+			GetOnlineUsers.setUserTable(response.getUsertable().Visit());
+		}
+		// 登出，点赞，取消赞
+		else if(response.getNo()==110 || response.getNo()==301 || response.getNo()==302){
 			;
 		}
 		else{

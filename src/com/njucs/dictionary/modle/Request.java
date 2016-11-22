@@ -10,6 +10,7 @@ import java.io.Serializable;
  * 获取点赞数	 	3
  * 更新点赞		4
  * 注销				5
+ * 获取用户列表 6
  * @author zhe
  *
  */
@@ -19,6 +20,11 @@ public class Request implements Serializable{
 	private String word;
 	private User user;
 	private Like like;
+	
+	// 获取用户列表时用的请求
+	public Request(int no){
+		this.no=no;
+	}
 	
 	// 更新点赞数时用的请求
 	public Request(int no, String word, Like like){

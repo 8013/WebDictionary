@@ -1,13 +1,12 @@
 package com.njucs.dictionary.modle;
 
+import java.io.Serializable;
 import java.util.Vector;
 
-class TableStruct{
+class TableStruct implements Serializable{
+	private static final long serialVersionUID = -4030412289589493788L;
 	private String user;
 	private int state;
-	
-	public TableStruct(){
-	}
 	
 	public TableStruct(String user, int state){
 		this.user=user;
@@ -22,19 +21,14 @@ class TableStruct{
 		return state;
 	}
 	
-	public void setUser(String user){
-		this.user=user;
-	}
-	
-	public void setState(int state){
-		this.state=state;
-	}
 }
 
-public class UserTable {
+public class UserTable implements Serializable{
+	private static final long serialVersionUID = 3151726305316856748L;
 	private Vector<TableStruct> User;
 	
 	public UserTable(){
+		User=new Vector<>();
 	}
 	
 	public UserTable(Vector<TableStruct> User){
@@ -43,6 +37,16 @@ public class UserTable {
 	
 	public Vector<TableStruct> GetUserTable(){
 		return User;
+	}
+	
+	public String[][] Visit(){
+		String[][] users=new String[User.size()][];
+		for(int i=0;i<User.size();i++){
+			users[i]=new String[2];
+			users[i][0]=User.get(i).getUser();
+			users[i][1]=User.get(i).getState()>0?"在线":"离线";
+		}
+		return users;
 	}
 	
 	public void Add(TableStruct ts){

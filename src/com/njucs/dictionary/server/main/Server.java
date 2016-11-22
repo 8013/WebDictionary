@@ -179,7 +179,7 @@ public class Server {
 					response=new Response(110,"");
 					service.UpdateUserState(id, 0);
 					serverframe.AddMessage("Logout", "ID:"+id, "Success", sdf.format(new Date()), IPAddr);
-					id=null;
+					this.id=null;
 				} catch (SQLException e) {
 					e.printStackTrace();
 				}

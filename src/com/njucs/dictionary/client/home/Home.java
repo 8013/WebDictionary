@@ -17,22 +17,21 @@ public class Home extends JFrame {
 	
 	// GUI构造函数
 	public Home(String username){
-		JPanel content=new JPanel();
-		content.setLayout(new BorderLayout());
+		JPanel content=new JPanel(new BorderLayout());
 		setContentPane(content);		
 		
 		dictionaryPanel=new DictionaryPanel();
 		content.add(dictionaryPanel);
 		
-		JPanel east=new JPanel();
-		east.setPreferredSize(new Dimension(300, 640));
+		JPanel west=new JPanel();
+		west.setPreferredSize(new Dimension(300, 640));
 		LogoutPanel logoutPanel=new LogoutPanel(username);
-		east.add(logoutPanel);
+		west.add(logoutPanel);
 		
 		OnlineUserPanel onlineUserPanel=new OnlineUserPanel();
-		east.add(onlineUserPanel);
+		west.add(onlineUserPanel);
 		
-		content.add(east, BorderLayout.EAST);
+		content.add(west, BorderLayout.WEST);
 		pack();
 	}
 	
