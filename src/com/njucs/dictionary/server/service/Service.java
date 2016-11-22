@@ -253,14 +253,14 @@ public class Service extends DBOption{
 			int state=res.getInt("state");
 			usertable.Add(user,state);
 		}
-		return new Response(400,"");
+		return new Response(310,usertable);
 	}
 
 	public void UpdateUserState(String id, int state) throws SQLException{
 		String sql="select * from account where id='"+id+"'";
 		ResultSet res=executeQueryRS(sql, null);
 		if(res.next()){
-			sql="update account set value="+state+" where id='"+id+"'";
+			sql="update account set state="+state+" where id='"+id+"'";
 			ExcuteUpdate(sql, null);
 		}
 	}

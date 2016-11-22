@@ -107,6 +107,7 @@ public class Server {
 					try{
 						socket.sendUrgentData(0);
 					} catch(IOException e){
+						e.printStackTrace();
 						break;
 					}
 				}
@@ -175,10 +176,20 @@ public class Server {
 			case 5:{
 				MinusOnlineNum();
 				try {
+					response=new Response(110,"");
 					service.UpdateUserState(id, 0);
 					serverframe.AddMessage("Logout", "ID:"+id, "Success", sdf.format(new Date()), IPAddr);
 					id=null;
 				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+				break;
+			}
+			case 6:{
+				try {
+					response=service.GetUserTable();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				break;
