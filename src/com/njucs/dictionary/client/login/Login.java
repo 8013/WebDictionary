@@ -15,7 +15,7 @@ public class Login extends JFrame {
 	
 	private JTextField usernameField;
 	private JPasswordField passwordField;
-	private JButton login,register;
+	private JButton login,register,setting;
 	private static Login frame;
 	
 	// 按钮的响应函数
@@ -43,6 +43,15 @@ public class Login extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				Register.Show();
+				dispose();
+			}
+		});
+		
+		// 点击设置跳转到设置界面
+		setting.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				Setting.Show();
 				dispose();
 			}
 		});
@@ -89,6 +98,10 @@ public class Login extends JFrame {
 		register=new JButton("注册");
 		register.setFont(font);
 		buttonPanel.add(register);
+		
+		setting=new JButton("设置");
+		setting.setFont(font);
+		buttonPanel.add(setting);
 		
 		ButtonListener();
 		pack();

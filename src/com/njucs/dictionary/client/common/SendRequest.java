@@ -2,6 +2,8 @@ package com.njucs.dictionary.client.common;
 
 import java.io.*;
 import java.net.Socket;
+
+import com.njucs.dictionary.client.login.Setting;
 import com.njucs.dictionary.modle.Request;
 import com.njucs.dictionary.modle.Response;
 /**
@@ -18,7 +20,8 @@ public class SendRequest {
 		// socket初始化
 		if(socket==null){
 			try {
-				socket=new Socket("localhost", 8000);
+				socket=new Socket(Setting.ip, Integer.parseInt(Setting.port));
+//				socket=new Socket("localhost", 8000);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
