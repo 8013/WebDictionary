@@ -11,6 +11,7 @@ import java.io.Serializable;
  * 更新点赞		4
  * 注销				5
  * 获取用户列表 6
+ * 退出程序		7
  * @author zhe
  *
  */
@@ -21,7 +22,7 @@ public class Request implements Serializable{
 	private User user;
 	private Like like;
 	
-	// 获取用户列表时用的请求
+	// 获取用户列表、退出程序时用的请求
 	public Request(int no){
 		this.no=no;
 	}

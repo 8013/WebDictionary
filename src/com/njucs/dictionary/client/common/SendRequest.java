@@ -51,11 +51,14 @@ public class SendRequest {
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}
+		
 	}
 
-	public static void CloseSocket(){
+	public static void CloseRequest(){
 		if(socket!=null){
+			Request request=new Request(7);
 			try {
+				toServer.writeObject(request);
 				socket.close();
 			} catch (IOException e) {
 				e.printStackTrace();

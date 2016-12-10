@@ -35,7 +35,6 @@ public class Server {
 			serverSocket=new ServerSocket(8000);
 			serverframe=new ServerFrame();
 			service=new Service();
-			System.out.println("Server started ");
 			mainloop();
 		} catch(IOException ex){
 			ex.printStackTrace();
@@ -76,7 +75,8 @@ public class Server {
 		private ObjectInputStream fromClient;
 		private ObjectOutputStream toClient;
 		private String id=null;
-
+		private boolean stop=false;
+		
 		public HandleARequest(Socket socket){
 			this.socket=socket;
 		}
@@ -85,11 +85,10 @@ public class Server {
 		public void run() {
 			try {
 				fromClient=new ObjectInputStream(socket.getInputStream());
-				Response response;
 				toClient=new ObjectOutputStream(socket.getOutputStream());
 				String IPAddr=socket.getInetAddress().getHostAddress();
 				//id=((Request)fromClient.readObject()).getUser().getUsername();
-				while(true){
+				while(!stop){
 					//serverframe.AddMessage("Client IP:"+socket.getInetAddress().getHostAddress(),serverframe.GetTypeIndex("all"));
 					Request request;
 					request = (Request)fromClient.readObject();
@@ -102,14 +101,12 @@ public class Server {
 							e.printStackTrace();
 						}
 					}
+					Response response;
 					response=HandleRequest(request, IPAddr, id);
-					toClient.writeObject(response);
-					try{
-						socket.sendUrgentData(0);
-					} catch(IOException e){
-						e.printStackTrace();
-						break;
-					}
+					if(response.getNo()==111)
+						stop=true;
+					else
+						toClient.writeObject(response);
 				}
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -174,7 +171,6 @@ public class Server {
 				break;
 			}
 			case 5:{
-				MinusOnlineNum();
 				try {
 					response=new Response(110,"");
 					service.UpdateUserState(id, 0);
@@ -188,8 +184,20 @@ public class Server {
 			case 6:{
 				try {
 					response=service.GetUserTable();
+					serverframe.AddMessage("GetUserTable", "ID:"+id, "Success", sdf.format(new Date()), IPAddr);
 				} catch (SQLException e) {
-					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				break;
+			}
+			case 7:{
+				try {
+					MinusOnlineNum();
+					response=new Response(111,"");
+					service.UpdateUserState(id, 0);
+					serverframe.AddMessage("Exit", "ID:"+id, "Success", sdf.format(new Date()), IPAddr);
+					this.id=null;
+				} catch (SQLException e) {
 					e.printStackTrace();
 				}
 				break;
