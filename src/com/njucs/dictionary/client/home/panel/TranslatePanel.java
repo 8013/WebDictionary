@@ -1,9 +1,10 @@
 package com.njucs.dictionary.client.home.panel;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import javax.swing.*;
 
 import com.njucs.dictionary.client.common.SendRequest;
@@ -28,7 +29,7 @@ public class TranslatePanel extends JPanel{
 	private Font font=new Font("微软雅黑", Font.PLAIN, 18);
 	private ImageIcon like=new ImageIcon("res/like.png");
 	private ImageIcon dislike=new ImageIcon("res/dislike.png");
-	private JLabel likeLabel;
+	private JLabel likeLabel,shareLabel;
 	private JTextArea textArea;
 
 	public TranslatePanel(Icon icon, String name){
@@ -47,21 +48,26 @@ public class TranslatePanel extends JPanel{
 		scrollPane.setPreferredSize(textArea.getPreferredSize());
 		this.add(scrollPane);
 		
+		JPanel labelPanel=new JPanel();
+		labelPanel.setLayout(new BorderLayout(0,10));
+		
 		likeLabel=new JLabel();
 		likeLabel.setFont(font);
-		this.add(likeLabel);
+		labelPanel.add(likeLabel, BorderLayout.NORTH);
 		
-		likeLabel.addMouseListener(new MouseListener() {
-			@Override
-			public void mouseReleased(MouseEvent arg0) {}
-			@Override
-			public void mousePressed(MouseEvent arg0) {}
-			@Override
-			public void mouseExited(MouseEvent arg0) {}	
-			@Override
-			public void mouseEntered(MouseEvent arg0) {}
-			
-			@Override
+		shareLabel=new JLabel();
+		labelPanel.add(shareLabel,BorderLayout.CENTER);
+		this.add(labelPanel);
+		
+		// 分享
+		shareLabel.addMouseListener(new MouseAdapter() {
+			public void mouseClicked(MouseEvent arg0) {
+				SharePanel.Show(word,name);
+			}
+		});
+		
+		// 点赞
+		likeLabel.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent arg0) {
 				if(flag==false){
 					likeLabel.setIcon(like);
@@ -112,6 +118,10 @@ public class TranslatePanel extends JPanel{
 
 	public JLabel getLikeLabel() {
 		return likeLabel;
+	}
+	
+	public JLabel getShareLabel(){
+		return shareLabel;
 	}
 	
 	public void setWord(String word) {

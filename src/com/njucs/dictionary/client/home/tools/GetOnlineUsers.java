@@ -5,7 +5,7 @@ import com.njucs.dictionary.modle.Request;
 
 public class GetOnlineUsers {
 		
-		static String[][] userTable;
+		public static String[][] userTable;
 		
 		public static String[][] FromServer(){
 			Request request=new Request(6);

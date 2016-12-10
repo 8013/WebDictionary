@@ -23,7 +23,7 @@ public class LogoutPanel extends JPanel{
 	private String username;
 	private Font font=new Font("微软雅黑", Font.PLAIN, 18);
 	private Dimension size=new Dimension(280, 120);
-	private JButton modify, logout;
+	private JButton message, logout;
 	
 	private void ButtonListener(){
 		
@@ -37,10 +37,10 @@ public class LogoutPanel extends JPanel{
 			}
 		});
 		
-		modify.addActionListener(new ActionListener() {
+		message.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-
+				message.setText("消息(1)");
 			}
 		});
 		
@@ -52,13 +52,13 @@ public class LogoutPanel extends JPanel{
 		infomation.setPreferredSize(new Dimension(280, 60));
 		infomation.setFont(font);
 		
-		modify=new JButton("修改个人信息");
-		modify.setFont(font);
+		message=new JButton("消息");
+		message.setFont(font);
 		logout=new JButton("注销");
 		logout.setFont(font);
 		
 		JPanel buttonPanel=new JPanel();
-		buttonPanel.add(modify);
+		buttonPanel.add(message);
 		buttonPanel.add(logout);
 		
 		ButtonListener();

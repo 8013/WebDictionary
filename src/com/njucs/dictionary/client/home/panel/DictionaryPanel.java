@@ -10,9 +10,7 @@ import javax.swing.*;
 
 import com.njucs.dictionary.client.home.tools.CheckWord;
 import com.njucs.dictionary.client.home.tools.GetLikes;
-import com.njucs.dictionary.client.search.Baidu;
-import com.njucs.dictionary.client.search.Jinshan;
-import com.njucs.dictionary.client.search.Youdao;
+import com.njucs.dictionary.client.search.*;
 import com.njucs.dictionary.modle.Like;
 /**
  * 词典的显示界面
@@ -27,6 +25,7 @@ public class DictionaryPanel extends JPanel{
 	private Dimension size=new Dimension(640, 640);
 	private ImageIcon dislike=new ImageIcon("res/dislike.png");
 	private ImageIcon like=new ImageIcon("res/like.png");
+	private ImageIcon share=new ImageIcon("res/share.png");
 	
 	private JPanel descriptionPanel;
 	private TranslatePanel baidu, youdao, jinshan;
@@ -62,7 +61,7 @@ public class DictionaryPanel extends JPanel{
 					
 				// 联网搜索
 				baidu.setWord(word);
-				baidu.getTextArea().setText(Baidu.Translate(word));
+//				baidu.getTextArea().setText(Baidu.Translate(word));
 				baidu.getTextArea().setCaretPosition(0);
 				youdao.setWord(word);
 				youdao.getTextArea().setText(Youdao.Translate(word));
@@ -227,14 +226,17 @@ public class DictionaryPanel extends JPanel{
 		baidu.setFlag(likes.getBaidulike());			
 		baidu.getLikeLabel().setIcon(likes.getBaidulike()>0?like:dislike);
 		baidu.getLikeLabel().setText(likes.getBaidu()+"");
+		baidu.getShareLabel().setIcon(share);
 		
 		youdao.setFlag(likes.getYoudaolike());
 		youdao.getLikeLabel().setIcon(likes.getYoudaolike()>0?like:dislike);
 		youdao.getLikeLabel().setText(likes.getYoudao()+"");
+		youdao.getShareLabel().setIcon(share);
 		
 		jinshan.setFlag(likes.getJinshanlike());
 		jinshan.getLikeLabel().setIcon(likes.getJinshanlike()>0?like:dislike);
 		jinshan.getLikeLabel().setText(likes.getJinshan()+"");
+		jinshan.getShareLabel().setIcon(share);
 		
 		Sort(new Like(likes.getBaidu(), likes.getYoudao(), likes.getJinshan()));
 		
