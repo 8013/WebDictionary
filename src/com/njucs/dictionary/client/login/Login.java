@@ -6,11 +6,12 @@ import java.awt.event.ActionListener;
 
 import javax.swing.*;
 
+import com.njucs.dictionary.client.common.MyFrame;
 import com.njucs.dictionary.client.common.SendRequest;
 import com.njucs.dictionary.client.register.Register;
 import com.njucs.dictionary.modle.*;
 
-public class Login extends JFrame {
+public class Login extends MyFrame {
 	private static final long serialVersionUID = -6765456694853821472L;
 	
 	private JTextField usernameField;
@@ -113,7 +114,6 @@ public class Login extends JFrame {
 		frame.setTitle("用户登录");
 		frame.setResizable(false);
 		frame.setLocationRelativeTo(null);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setVisible(true);
 	}
 	

@@ -6,12 +6,13 @@ import java.awt.event.ActionListener;
 
 import javax.swing.*;
 
+import com.njucs.dictionary.client.common.MyFrame;
 import com.njucs.dictionary.client.common.SendRequest;
 import com.njucs.dictionary.client.login.Login;
 import com.njucs.dictionary.modle.Request;
 import com.njucs.dictionary.modle.User;
 
-public class Register extends JFrame {
+public class Register extends MyFrame {
 
 	private static final long serialVersionUID = 5364825161575734991L;
 	
@@ -121,7 +122,6 @@ public class Register extends JFrame {
 		frame.setTitle("注册");
 		frame.setResizable(false);
 		frame.setLocationRelativeTo(null);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setVisible(true);
 	}
 	

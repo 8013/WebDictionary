@@ -5,11 +5,12 @@ import java.awt.Dimension;
 
 import javax.swing.*;
 
+import com.njucs.dictionary.client.common.MyFrame;
 import com.njucs.dictionary.client.home.panel.DictionaryPanel;
 import com.njucs.dictionary.client.home.panel.LogoutPanel;
 import com.njucs.dictionary.client.home.panel.OnlineUserPanel;
 
-public class Home extends JFrame {
+public class Home extends MyFrame {
 	private static final long serialVersionUID = -7095027738615460603L;
 	private static Home frame;
 	public static DictionaryPanel dictionaryPanel;
@@ -38,10 +39,9 @@ public class Home extends JFrame {
 	// 静态显示函数
 	public static void Show(String username){
 		frame=new Home(username);
-		frame.setTitle("WebDictionary");
+		frame.setTitle("网络词典");
 		frame.setResizable(false);
 		frame.setLocationRelativeTo(null);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setVisible(true);
 	}
 	
