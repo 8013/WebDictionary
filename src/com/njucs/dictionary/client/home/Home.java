@@ -33,6 +33,7 @@ public class Home extends MyFrame {
 		
 		GetOnlineUsers.FromServer();
 		GetNews.FromServer();
+		logoutPanel.Update(GetNews.unread());
 		
 		onlineUserPanel=new OnlineUserPanel();
 		west.add(onlineUserPanel);

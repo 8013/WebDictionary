@@ -74,8 +74,12 @@ public class LogoutPanel extends JPanel{
 		this.setBorder(BorderFactory.createLoweredSoftBevelBorder());
 	}
 
-	public JButton MessageButton(){
-		return message;
+	public void Update(int n){
+		if(n>0){
+			message.setText("消息("+n+")");
+		}
+		else{
+			message.setText("消息");
+		}
 	}
-	
 }

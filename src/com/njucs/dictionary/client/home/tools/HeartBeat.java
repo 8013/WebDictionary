@@ -23,10 +23,8 @@ public class HeartBeat implements Runnable{
 				request=new Request(9);
 				if(SendRequest.SendHeartBeat(request)==false)
 					break;
-				int n=GetNews.unread();
-				if(n>0){
-					Home.logoutPanel.MessageButton().setText("未读("+n+")");
-				}
+				Home.logoutPanel.Update(GetNews.unread());
+				
 			}
 		}
 	}

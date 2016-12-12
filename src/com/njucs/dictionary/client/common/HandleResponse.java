@@ -18,6 +18,7 @@ public class HandleResponse {
 			Home.Show(response.getDescription());
 			Login.Destroy();
 			new Thread(new HeartBeat()).start();
+			HeartBeat.running=true;
 		}
 		// 注册成功
 		else if(response.getNo()==200){
