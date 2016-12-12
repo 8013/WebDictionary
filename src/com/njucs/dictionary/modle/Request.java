@@ -10,7 +10,7 @@ import java.io.Serializable;
  * 获取点赞数	 	3
  * 更新点赞		4
  * 注销				5
- * 获取用户列表 6
+ * 获取用户列表		6
  * 退出程序		7
  * @author zhe
  *
@@ -21,6 +21,7 @@ public class Request implements Serializable{
 	private String word;
 	private User user;
 	private Like like;
+	private SharedWord sharedword;
 	
 	// 获取用户列表、退出程序时用的请求
 	public Request(int no){
@@ -60,6 +61,14 @@ public class Request implements Serializable{
 
 	public Like getLike() {
 		return like;
+	}
+
+	public SharedWord getSharedword() {
+		return sharedword;
+	}
+
+	public void setSharedword(SharedWord sharedword) {
+		this.sharedword = sharedword;
 	}
 	
 }

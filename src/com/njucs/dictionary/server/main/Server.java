@@ -202,6 +202,29 @@ public class Server {
 				}
 				break;
 			}
+			case 10:{
+				//心跳包的请求，也用于获取消息列表和用户列表
+				try{
+					//获取分享消息
+					response=service.GetSharedWord(id);
+					//获取用户列表
+					response.setUsertable(service.GetUserTable().getUsertable());
+					serverframe.AddMessage("GetSharedTable", "ID"+id, "Success", sdf.format(new Date()), IPAddr);
+				} catch(SQLException e){
+					e.printStackTrace();
+				}
+				break;
+			}
+			case 11:{
+				//发送分享列表
+				try{
+					response=service.SendSharedWord(request.getSharedword());
+					serverframe.AddMessage("SendSharedWord", "ID:"+id, "Success", sdf.format(new Date()), IPAddr);
+				} catch(SQLException e){
+					e.printStackTrace();
+				}
+				break;
+			}
 			default:break;
 			}
 			return response;

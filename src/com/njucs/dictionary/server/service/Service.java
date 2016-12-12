@@ -2,9 +2,9 @@ package com.njucs.dictionary.server.service;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-
 import com.njucs.dictionary.modle.Like;
 import com.njucs.dictionary.modle.Response;
+import com.njucs.dictionary.modle.SharedWord;
 import com.njucs.dictionary.modle.UserTable;
 import com.njucs.dictionary.server.dboption.DBOption;
 
@@ -263,5 +263,26 @@ public class Service extends DBOption{
 			sql="update account set state="+state+" where id='"+id+"'";
 			ExcuteUpdate(sql, null);
 		}
+	}
+	
+	public Response GetSharedWord(String id) throws SQLException{
+		String sql="select * from sharedword where ToID='"+id+"'";
+		ResultSet res=executeQueryRS(sql, null);
+		SharedWord sharedword=new SharedWord();
+		while(res.next()){
+			sharedword.AddSharedWord(res.getString("FromID"), res.getString("word"));
+		}
+		sql="delete from sharedword where ToID='"+id+"'";
+		ExcuteUpdate(sql, null);
+		return new Response(312,sharedword);
+	}
+	
+	public Response SendSharedWord(SharedWord sharedword) throws SQLException{
+		for(int i=0;i<sharedword.GetSize();i++){
+			String params[]=sharedword.GetInfo(i);
+			String sql="insert into sharedword(FromID,ToID,word) values(?,?,?)";
+			ExcuteUpdate(sql, params);
+		}
+		return new Response(311,"");
 	}
 }
