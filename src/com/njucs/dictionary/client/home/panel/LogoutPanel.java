@@ -2,7 +2,7 @@ package com.njucs.dictionary.client.home.panel;
 /**
  * 登出面板：
  * 		注销
- * 		修改用户个人信息
+ * 		查看消息
  */
 import java.awt.Dimension;
 import java.awt.Font;
@@ -13,6 +13,7 @@ import javax.swing.*;
 
 import com.njucs.dictionary.client.common.SendRequest;
 import com.njucs.dictionary.client.home.Home;
+import com.njucs.dictionary.client.home.tools.HeartBeat;
 import com.njucs.dictionary.client.login.Login;
 import com.njucs.dictionary.modle.Request;
 import com.njucs.dictionary.modle.User;
@@ -27,21 +28,23 @@ public class LogoutPanel extends JPanel{
 	
 	private void ButtonListener(){
 		
+		// 退出登录，返回登录界面，停止发送心跳包
 		logout.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				Request request=new Request(5, new User(username));
 				SendRequest.Send(request);
+				HeartBeat.running=false;
 				Login.Show();
 				Home.Destroy();
 			}
 		});
 		
+		// 查看消息，打开消息面板
 		message.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Request request=new Request(9);
-				SendRequest.Send(request);
+				NewsPanel.Show();
 			}
 		});
 		
@@ -71,8 +74,8 @@ public class LogoutPanel extends JPanel{
 		this.setBorder(BorderFactory.createLoweredSoftBevelBorder());
 	}
 
-	public String getUsername() {
-		return username;
+	public JButton MessageButton(){
+		return message;
 	}
 	
 }

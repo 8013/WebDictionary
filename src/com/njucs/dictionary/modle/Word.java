@@ -9,14 +9,14 @@ public class Word implements Serializable{
 	private String type;
 	private String from;
 	private Date date;
-	private boolean unread;
+	private boolean isread;
 	
-	public Word(String word, String type, String from, Date date, boolean unread){
+	public Word(String word, String type, String from, Date date, boolean isread){
 		this.word=word;
 		this.type=type;
 		this.from=from;
 		this.date=date;
-		this.unread=unread;
+		this.isread=isread;
 	}
 	
 	public String getWord() {
@@ -35,8 +35,8 @@ public class Word implements Serializable{
 		return date;
 	}
 
-	public boolean isUnread() {
-		return unread;
+	public boolean isRead() {
+		return isread;
 	}
 
 }

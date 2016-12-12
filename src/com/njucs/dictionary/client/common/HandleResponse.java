@@ -1,6 +1,7 @@
 package com.njucs.dictionary.client.common;
 
 import com.njucs.dictionary.client.home.Home;
+import com.njucs.dictionary.client.home.tools.GetNews;
 import com.njucs.dictionary.client.home.tools.GetOnlineUsers;
 import com.njucs.dictionary.client.home.tools.HeartBeat;
 import com.njucs.dictionary.client.login.Login;
@@ -29,11 +30,14 @@ public class HandleResponse {
 		}
 		// 获取用户列表
 		else if(response.getNo()==310){
-			GetOnlineUsers.setUserTable(response.getUsertable().Visit());
+			GetOnlineUsers.userTable=response.getUsertable().Visit();
 		}
 		// 登出，点赞，取消赞
 		else if(response.getNo()==110 || response.getNo()==301 || response.getNo()==302){
 			;
+		}
+		else if(response.getNo()==900){
+			GetNews.words=response.getWords();
 		}
 		else{
 			Message.Show(response.getDescription());

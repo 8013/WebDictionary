@@ -27,6 +27,7 @@ public class Service extends DBOption{
 		if(res.next()){
 			if(password.equals(res.getString("password"))){
 //				return new Response(100,"登陆成功");
+				UpdateUserState(id, 1);
 				return new Response(100, id);
 			}
 			else
@@ -45,6 +46,7 @@ public class Service extends DBOption{
 			sql="insert into account(id,password,email) values(?,?,?)";
 			String[] params={id,password,email};
 			ExcuteUpdate(sql, params);
+			UpdateUserState(id, 0);
 			return new Response(200,"注册成功");
 		} 
 	}

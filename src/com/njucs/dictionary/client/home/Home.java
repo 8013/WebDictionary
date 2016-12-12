@@ -9,6 +9,7 @@ import com.njucs.dictionary.client.common.MyFrame;
 import com.njucs.dictionary.client.home.panel.DictionaryPanel;
 import com.njucs.dictionary.client.home.panel.LogoutPanel;
 import com.njucs.dictionary.client.home.panel.OnlineUserPanel;
+import com.njucs.dictionary.client.home.tools.GetNews;
 import com.njucs.dictionary.client.home.tools.GetOnlineUsers;
 
 public class Home extends MyFrame {
@@ -16,7 +17,7 @@ public class Home extends MyFrame {
 	private static Home frame;
 	public static DictionaryPanel dictionaryPanel;
 	public static OnlineUserPanel onlineUserPanel;
-	
+	public static LogoutPanel logoutPanel;
 	// GUI构造函数
 	public Home(String username){
 		JPanel content=new JPanel(new BorderLayout());
@@ -27,10 +28,11 @@ public class Home extends MyFrame {
 		
 		JPanel west=new JPanel();
 		west.setPreferredSize(new Dimension(300, 640));
-		LogoutPanel logoutPanel=new LogoutPanel(username);
+		logoutPanel=new LogoutPanel(username);
 		west.add(logoutPanel);
 		
 		GetOnlineUsers.FromServer();
+		GetNews.FromServer();
 		
 		onlineUserPanel=new OnlineUserPanel();
 		west.add(onlineUserPanel);

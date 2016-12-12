@@ -10,15 +10,24 @@ public class HeartBeat implements Runnable{
 	public void run() {
 		while(running){
 			try {
-				Thread.sleep(5000);
+				Thread.sleep(9999);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
-			}			
-			Request request=new Request(6);
-			if(SendRequest.SendHeartBeat(request)==false){
-				break;
 			}
-			Home.onlineUserPanel.Update();
+			if(running){
+				Request request=new Request(6);
+				if(SendRequest.SendHeartBeat(request)==false)
+					break;
+				Home.onlineUserPanel.Update();
+				
+				request=new Request(9);
+				if(SendRequest.SendHeartBeat(request)==false)
+					break;
+				int n=GetNews.unread();
+				if(n>0){
+					Home.logoutPanel.MessageButton().setText("未读("+n+")");
+				}
+			}
 		}
 	}
 }
