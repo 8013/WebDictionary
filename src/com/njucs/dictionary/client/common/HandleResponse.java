@@ -2,6 +2,7 @@ package com.njucs.dictionary.client.common;
 
 import com.njucs.dictionary.client.home.Home;
 import com.njucs.dictionary.client.home.tools.GetOnlineUsers;
+import com.njucs.dictionary.client.home.tools.HeartBeat;
 import com.njucs.dictionary.client.login.Login;
 import com.njucs.dictionary.modle.*;
 /**
@@ -15,6 +16,7 @@ public class HandleResponse {
 		if(response.getNo()==100){
 			Home.Show(response.getDescription());
 			Login.Destroy();
+			new Thread(new HeartBeat()).start();
 		}
 		// 注册成功
 		else if(response.getNo()==200){

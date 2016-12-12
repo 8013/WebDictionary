@@ -9,12 +9,13 @@ import com.njucs.dictionary.client.common.MyFrame;
 import com.njucs.dictionary.client.home.panel.DictionaryPanel;
 import com.njucs.dictionary.client.home.panel.LogoutPanel;
 import com.njucs.dictionary.client.home.panel.OnlineUserPanel;
+import com.njucs.dictionary.client.home.tools.GetOnlineUsers;
 
 public class Home extends MyFrame {
 	private static final long serialVersionUID = -7095027738615460603L;
 	private static Home frame;
 	public static DictionaryPanel dictionaryPanel;
-	
+	public static OnlineUserPanel onlineUserPanel;
 	
 	// GUI构造函数
 	public Home(String username){
@@ -29,9 +30,11 @@ public class Home extends MyFrame {
 		LogoutPanel logoutPanel=new LogoutPanel(username);
 		west.add(logoutPanel);
 		
-		OnlineUserPanel onlineUserPanel=new OnlineUserPanel();
-		west.add(onlineUserPanel);
+		GetOnlineUsers.FromServer();
 		
+		onlineUserPanel=new OnlineUserPanel();
+		west.add(onlineUserPanel);
+	
 		content.add(west, BorderLayout.WEST);
 		pack();
 	}

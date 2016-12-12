@@ -7,10 +7,9 @@ public class GetOnlineUsers {
 		
 		public static String[][] userTable;
 		
-		public static String[][] FromServer(){
+		public static void FromServer(){
 			Request request=new Request(6);
 			SendRequest.Send(request);
-			return userTable;
 		}
 		
 		public static void setUserTable(String[][] usertable){

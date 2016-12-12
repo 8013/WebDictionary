@@ -66,4 +66,19 @@ public class SendRequest {
 		}
 	}
 	
+	public static boolean SendHeartBeat(Request request){
+		if(socket.isClosed())
+			return false;
+		try {	
+			toServer.writeObject(request);
+			Response response=(Response)fromServer.readObject();		
+			HandleResponse.Handle(response);
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+		return true;
+	}
+	
 }
