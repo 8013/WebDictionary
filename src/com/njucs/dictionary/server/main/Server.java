@@ -92,7 +92,7 @@ public class Server {
 					//serverframe.AddMessage("Client IP:"+socket.getInetAddress().getHostAddress(),serverframe.GetTypeIndex("all"));
 					Request request;
 					request = (Request)fromClient.readObject();
-					if(id==null&&request.getUser().getUsername()!=null){
+					if(id==null&&request.getUser()!=null){
 						id=request.getUser().getUsername();
 						AddOnlineNum();
 						try {
@@ -172,6 +172,7 @@ public class Server {
 			}
 			case 5:{
 				try {
+					MinusOnlineNum();
 					response=new Response(110,"");
 					service.UpdateUserState(id, 0);
 					serverframe.AddMessage("Logout", "ID:"+id, "Success", sdf.format(new Date()), IPAddr);
@@ -202,23 +203,20 @@ public class Server {
 				}
 				break;
 			}
-			case 10:{
-				//心跳包的请求，也用于获取消息列表和用户列表
+			case 9:{
 				try{
 					//获取分享消息
 					response=service.GetSharedWord(id);
-					//获取用户列表
-					response.setUsertable(service.GetUserTable().getUsertable());
 					serverframe.AddMessage("GetSharedTable", "ID"+id, "Success", sdf.format(new Date()), IPAddr);
-				} catch(SQLException e){
+				} catch(Exception e){
 					e.printStackTrace();
 				}
 				break;
 			}
-			case 11:{
+			case 8:{
 				//发送分享列表
 				try{
-					response=service.SendSharedWord(request.getSharedword());
+					response=service.SendSharedWord(id,request.getShare());
 					serverframe.AddMessage("SendSharedWord", "ID:"+id, "Success", sdf.format(new Date()), IPAddr);
 				} catch(SQLException e){
 					e.printStackTrace();

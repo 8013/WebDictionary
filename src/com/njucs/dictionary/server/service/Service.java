@@ -2,10 +2,14 @@ package com.njucs.dictionary.server.service;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+
 import com.njucs.dictionary.modle.Like;
 import com.njucs.dictionary.modle.Response;
-import com.njucs.dictionary.modle.SharedWord;
+import com.njucs.dictionary.modle.Share;
 import com.njucs.dictionary.modle.UserTable;
+import com.njucs.dictionary.modle.Word;
 import com.njucs.dictionary.server.dboption.DBOption;
 
 public class Service extends DBOption{
@@ -265,24 +269,29 @@ public class Service extends DBOption{
 		}
 	}
 	
-	public Response GetSharedWord(String id) throws SQLException{
+	public Response GetSharedWord(String id) throws Exception{
 		String sql="select * from sharedword where ToID='"+id+"'";
 		ResultSet res=executeQueryRS(sql, null);
-		SharedWord sharedword=new SharedWord();
+		ArrayList<Word> words=new ArrayList<Word>();
+		SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		while(res.next()){
-			sharedword.AddSharedWord(res.getString("FromID"), res.getString("word"));
+			words.add(new Word(res.getString("Word"), res.getString("type"),res.getString("FromID"),sdf.parse(res.getString("time")),new Boolean(res.getString("isread"))));
 		}
-		sql="delete from sharedword where ToID='"+id+"'";
-		ExcuteUpdate(sql, null);
-		return new Response(312,sharedword);
+		/*sql="delete from sharedword where ToID='"+id+"'";
+		ExcuteUpdate(sql, null);*/
+		return new Response(900,words);
 	}
 	
-	public Response SendSharedWord(SharedWord sharedword) throws SQLException{
-		for(int i=0;i<sharedword.GetSize();i++){
-			String params[]=sharedword.GetInfo(i);
-			String sql="insert into sharedword(FromID,ToID,word) values(?,?,?)";
+	public Response SendSharedWord(String id,Share share) throws SQLException{
+		ArrayList<String> sharelist=share.getShareList();
+		SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		String word=share.getWord();
+		String type=share.getType();
+		for(int i=0;i<sharelist.size();i++){
+			String sql="insert into sharedword(FromID,ToID,Word,type,Time,isread) values(?,?,?,?,?,?)";
+			Object params[]={id,sharelist.get(i),word,type,sdf.format(share.getDate()),0};
 			ExcuteUpdate(sql, params);
 		}
-		return new Response(311,"");
+		return new Response(800,"分享成功");
 	}
 }

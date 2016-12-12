@@ -20,7 +20,7 @@ import java.util.ArrayList;
  * 					点赞		301	返回编号和一个空的description
  * 					取消赞	302	返回编号和一个空的description
  * 获取用户列表			310	返回编号和UserTable类
- * 分享单词				800	返回编号和description="分享成功"
+ * 分享单词			800	返回编号和description="分享成功"
  * 获取消息列表			900	返回编号和words列表
  */
 public class Response implements Serializable{
