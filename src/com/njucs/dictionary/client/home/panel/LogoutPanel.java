@@ -40,7 +40,8 @@ public class LogoutPanel extends JPanel{
 		message.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				message.setText("消息(1)");
+				Request request=new Request(9);
+				SendRequest.Send(request);
 			}
 		});
 		

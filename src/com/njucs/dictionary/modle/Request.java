@@ -5,13 +5,15 @@ import java.io.Serializable;
 /**
  * 客户端发送的请求类，no表示请求的种类
  * 服务器端根据不同的no转向不同的处理
- * 登录				1
- * 注册				2
- * 获取点赞数	 	3
- * 更新点赞		4
- * 注销				5
+ * 登录					1
+ * 注册					2
+ * 获取点赞数	 		3
+ * 更新点赞			4
+ * 注销					5
  * 获取用户列表		6
- * 退出程序		7
+ * 退出程序			7
+ * 分享单词			8
+ * 获取消息列表		9
  * @author zhe
  *
  */
@@ -21,9 +23,15 @@ public class Request implements Serializable{
 	private String word;
 	private User user;
 	private Like like;
-	private SharedWord sharedword;
+	private Share share;
 	
-	// 获取用户列表、退出程序时用的请求
+	// 分享单词时使用的请求
+	public Request(int no, Share share){
+		this.no=no;
+		this.share=share;
+	}
+	
+	// 获取用户列表、获取消息列表、退出程序时用的请求
 	public Request(int no){
 		this.no=no;
 	}
@@ -63,12 +71,8 @@ public class Request implements Serializable{
 		return like;
 	}
 
-	public SharedWord getSharedword() {
-		return sharedword;
+	public Share getShare() {
+		return share;
 	}
 
-	public void setSharedword(SharedWord sharedword) {
-		this.sharedword = sharedword;
-	}
-	
 }

@@ -1,6 +1,7 @@
 package com.njucs.dictionary.modle;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 /**
  * 服务器端发送的响应类
@@ -19,8 +20,8 @@ import java.io.Serializable;
  * 					点赞		301	返回编号和一个空的description
  * 					取消赞	302	返回编号和一个空的description
  * 获取用户列表			310	返回编号和UserTable类
- * 发送分享单词列表		311	返回编号和空的描述字符串
- * 获取分享单词列表		312	返回编号和SharedWord类（返回String数组长度为2，不包括ToID，0为FromID，1为word）
+ * 分享单词				800	返回编号和description="分享成功"
+ * 获取消息列表			900	返回编号和words列表
  */
 public class Response implements Serializable{
 	private static final long serialVersionUID = 2922287507014280279L;
@@ -28,7 +29,13 @@ public class Response implements Serializable{
 	private String description;
 	private Like like;
 	private UserTable usertable;
-	private SharedWord sharedword;
+	private ArrayList<Word> words;
+	
+	// 返回消息列表
+	public Response(int no, ArrayList<Word> words){
+		this.no=no;
+		this.words=words;
+	}
 	
 	// 搜索单词返回编号和单词各网站翻译的点赞数
 	public Response(int no, Like like){
@@ -42,14 +49,10 @@ public class Response implements Serializable{
 		this.description=description;
 	}
 	
+	// 返回用户列表
 	public Response(int no, UserTable usertable){
 		this.no=no;
 		this.usertable=usertable;
-	}
-	
-	public Response(int no, SharedWord sharedword){
-		this.no=no;
-		this.sharedword=sharedword;
 	}
 	
 	public int getNo() {
@@ -72,12 +75,7 @@ public class Response implements Serializable{
 		this.usertable=usertable;
 	}
 
-	public SharedWord getSharedword() {
-		return sharedword;
+	public ArrayList<Word> getWords() {
+		return words;
 	}
-
-	public void setSharedword(SharedWord sharedword) {
-		this.sharedword = sharedword;
-	}
-
 }

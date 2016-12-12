@@ -3,13 +3,17 @@ package com.njucs.dictionary.client.home.panel;
 import java.awt.BorderLayout;
 import java.awt.Font;
 import java.awt.event.*;
+import java.util.ArrayList;
 
 import javax.swing.*;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableCellRenderer;
 
 import com.njucs.dictionary.client.common.Message;
+import com.njucs.dictionary.client.common.SendRequest;
 import com.njucs.dictionary.client.home.tools.GetOnlineUsers;
+import com.njucs.dictionary.modle.Request;
+import com.njucs.dictionary.modle.Share;
 /**
  * 分享面板
  * @author zhe
@@ -48,13 +52,19 @@ public class SharePanel extends JFrame {
 		share.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				String temp=word+"	"+name+"\n";
+				ArrayList<String> shareList=new ArrayList<>();
 				for(int i=0;i<table.getRowCount();i++){
 					if((boolean)table.getValueAt(i, 0)==true){
-						temp+=table.getValueAt(i, 1)+"\n";
+						shareList.add((String) table.getValueAt(i, 1));
 					}
 				}
-				Message.Show(temp);
+				if(shareList.isEmpty()){
+					Message.Show("请选择需要分享的用户");
+				}
+				else{
+					Request request=new Request(8, new Share(shareList, word, name));
+					SendRequest.Send(request);
+				}
 			}
 		});
 
