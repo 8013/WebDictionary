@@ -95,4 +95,10 @@ public class Biying {
 		}
 		return buffer.toString();
 	}
+	
+	public static String Translate(String word){
+		
+		return null;
+	}
+	
 }

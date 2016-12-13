@@ -24,8 +24,8 @@ public class HeartBeat implements Runnable{
 				if(SendRequest.SendHeartBeat(request)==false)
 					break;
 				Home.logoutPanel.Update(GetNews.unread());
-				
 			}
+			System.gc();
 		}
 	}
 }

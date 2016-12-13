@@ -14,6 +14,7 @@ public class MyFrame extends JFrame {
 			@Override
             public void windowClosing(WindowEvent e) {
                 SendRequest.CloseRequest();
+				System.exit(0);
             }
 		});
 		

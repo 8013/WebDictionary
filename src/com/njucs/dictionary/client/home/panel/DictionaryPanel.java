@@ -62,6 +62,7 @@ public class DictionaryPanel extends JPanel{
 				// 联网搜索
 				baidu.setWord(word);
 //				baidu.getTextArea().setText(Baidu.Translate(word));
+				baidu.getTextArea().setText(Biying.Translate(word));
 				baidu.getTextArea().setCaretPosition(0);
 				youdao.setWord(word);
 				youdao.getTextArea().setText(Youdao.Translate(word));
