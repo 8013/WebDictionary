@@ -39,6 +39,7 @@ public class Biying {
 	
 	public String GetPronunciation(){
 		StringBuilder buffer=new StringBuilder();
+		buffer.append("发音:\n");
 		String reg="\"pronunciation\":\\{.*?\\}";
 		Matcher matcher=Pattern.compile(reg).matcher(content.toString());
 		while(matcher.find()){
@@ -57,11 +58,13 @@ public class Biying {
 				buffer.append("英音:"+s).append("\n");
 			}
 		}
+		buffer.append("\n");
 		return buffer.toString();
 	}
 	
 	public String GetMeaning(){
 		StringBuilder buffer=new StringBuilder();
+		buffer.append("释义:\n");
 		String reg="\"defs\":\\[\\{.*?\\}\\]";
 		Matcher matcher=Pattern.compile(reg).matcher(content.toString());
 		while(matcher.find()){
@@ -73,11 +76,13 @@ public class Biying {
 				buffer.append(s).append("\n");
 			}
 		}
+		buffer.append("\n");
 		return buffer.toString();
 	}
 	
 	public String GetSample(){
 		StringBuilder buffer=new StringBuilder();
+		buffer.append("例句:\n");
 		String reg="\"sams\":\\[\\{.*?\\}\\]";
 		Matcher matcher=Pattern.compile(reg).matcher(content.toString());
 		while(matcher.find()){
@@ -90,15 +95,16 @@ public class Biying {
 				String chn=s.substring(s.indexOf("\"chn\":\"")+"\"chn\":\"".length(), s.indexOf("\","));
 				eng=eng.replaceAll("\\\\\"", "\"");
 				chn=chn.replaceAll("\\\\\"", "\"");
-				buffer.append(eng+"\t"+chn).append("\n");
+				buffer.append(eng+"\n"+chn).append("\n").append("\n");
 			}
 		}
+		buffer.append("\n");
 		return buffer.toString();
 	}
 	
 	public static String Translate(String word){
-		
-		return null;
+		Biying b=new Biying(word);
+		return b.GetMeaning()+b.GetSample();
 	}
 	
 }
