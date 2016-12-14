@@ -193,11 +193,13 @@ public class Server {
 			}
 			case 7:{
 				try {
-					MinusOnlineNum();
-					response=new Response(111,"");
-					service.UpdateUserState(id, 0);
-					serverframe.AddMessage("Exit", "ID:"+id, "Success", sdf.format(new Date()), IPAddr);
-					this.id=null;
+					if(id!=null){
+						MinusOnlineNum();
+						response=new Response(111,"");
+						service.UpdateUserState(id, 0);
+						serverframe.AddMessage("Exit", "ID:"+id, "Success", sdf.format(new Date()), IPAddr);
+						this.id=null;
+					}
 				} catch (SQLException e) {
 					e.printStackTrace();
 				}
