@@ -185,7 +185,7 @@ public class Server {
 			case 6:{
 				try {
 					response=service.GetUserTable();
-					serverframe.AddMessage("GetUserTable", "ID:"+id, "Success", sdf.format(new Date()), IPAddr);
+					serverframe.AddMessage("GetUserTable", "ID:"+id, "", sdf.format(new Date()), IPAddr);
 				} catch (SQLException e) {
 					e.printStackTrace();
 				}
@@ -196,7 +196,7 @@ public class Server {
 					if(id!=null){
 						MinusOnlineNum();
 						service.UpdateUserState(id, 0);
-						serverframe.AddMessage("Exit", "ID:"+id, "Success", sdf.format(new Date()), IPAddr);
+						serverframe.AddMessage("Exit", "ID:"+id, "", sdf.format(new Date()), IPAddr);
 						this.id=null;
 					}
 					response=new Response(111,"");
@@ -209,7 +209,7 @@ public class Server {
 				try{
 					//获取分享消息
 					response=service.GetSharedWord(id);
-					serverframe.AddMessage("GetSharedTable", "ID"+id, "Success", sdf.format(new Date()), IPAddr);
+					serverframe.AddMessage("GetSharedTable", "ID:"+id, "", sdf.format(new Date()), IPAddr);
 				} catch(Exception e){
 					e.printStackTrace();
 				}
@@ -219,7 +219,16 @@ public class Server {
 				//发送分享列表
 				try{
 					response=service.SendSharedWord(id,request.getShare());
-					serverframe.AddMessage("SendSharedWord", "ID:"+id, "Success", sdf.format(new Date()), IPAddr);
+					serverframe.AddMessage("SendSharedWord", "ID:"+id, "", sdf.format(new Date()), IPAddr);
+				} catch(SQLException e){
+					e.printStackTrace();
+				}
+				break;
+			}
+			case 10:{
+				try{
+					response=service.UpdateSharedWord(id);
+					serverframe.AddMessage("All", "ID:"+id, "", sdf.format(new Date()), IPAddr);
 				} catch(SQLException e){
 					e.printStackTrace();
 				}
