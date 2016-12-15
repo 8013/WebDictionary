@@ -22,6 +22,7 @@ import java.util.ArrayList;
  * 获取用户列表			310	返回编号和UserTable类
  * 分享单词			800	返回编号和description="分享成功"
  * 获取消息列表			900	返回编号和words列表
+ * 消息已读			1000	返回编号和一个空的description
  */
 public class Response implements Serializable{
 	private static final long serialVersionUID = 2922287507014280279L;

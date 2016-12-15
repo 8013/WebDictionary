@@ -40,6 +40,9 @@ public class HandleResponse {
 		else if(response.getNo()==900){
 			GetNews.words=response.getWords();
 		}
+		else if(response.getNo()==1000){
+			Home.logoutPanel.Update(0);
+		}
 		else{
 			Message.Show(response.getDescription());
 		}

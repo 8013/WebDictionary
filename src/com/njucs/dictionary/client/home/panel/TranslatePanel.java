@@ -26,7 +26,7 @@ public class TranslatePanel extends JPanel{
 	private String name;
 	private String word;
 	private Color background=new Color(245, 245, 245);
-	private Font font=new Font("微软雅黑", Font.PLAIN, 16);
+	private Font font=new Font("微软雅黑", Font.PLAIN, 18);
 	private ImageIcon like=new ImageIcon("res/like.png");
 	private ImageIcon dislike=new ImageIcon("res/dislike.png");
 	private JLabel likeLabel,shareLabel;

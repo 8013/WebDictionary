@@ -45,6 +45,8 @@ public class LogoutPanel extends JPanel{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				NewsPanel.Show();
+				Request request=new Request(10);
+				SendRequest.Send(request);
 			}
 		});
 		

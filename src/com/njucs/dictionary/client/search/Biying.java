@@ -72,7 +72,7 @@ public class Biying {
 			Matcher matcherinside=Pattern.compile(reginside).matcher(matcher.group());
 			while(matcherinside.find()){
 				String s=matcherinside.group();
-				s=s.substring(s.indexOf("\"pos\":\"")+"\"pos\":\"".length(), s.indexOf("\","))+"\t"+s.substring(s.indexOf("\"def\":\"")+"\"def\":\"".length(), s.indexOf("\"}"));
+				s=s.substring(s.indexOf("\"pos\":\"")+"\"pos\":\"".length(), s.indexOf("\","))+" "+s.substring(s.indexOf("\"def\":\"")+"\"def\":\"".length(), s.indexOf("\"}"));
 				buffer.append(s).append("\n");
 			}
 		}

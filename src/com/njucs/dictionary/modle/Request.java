@@ -14,6 +14,7 @@ import java.io.Serializable;
  * 退出程序			7
  * 分享单词			8
  * 获取消息列表		9
+ * 更新消息已读未读状态 10
  * @author zhe
  *
  */

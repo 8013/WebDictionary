@@ -195,11 +195,11 @@ public class Server {
 				try {
 					if(id!=null){
 						MinusOnlineNum();
-						response=new Response(111,"");
 						service.UpdateUserState(id, 0);
 						serverframe.AddMessage("Exit", "ID:"+id, "Success", sdf.format(new Date()), IPAddr);
 						this.id=null;
 					}
+					response=new Response(111,"");
 				} catch (SQLException e) {
 					e.printStackTrace();
 				}
