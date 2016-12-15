@@ -277,7 +277,13 @@ public class Service extends DBOption{
 		ArrayList<Word> words=new ArrayList<Word>();
 		SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		while(res.next()){
-			words.add(new Word(res.getString("Word"), res.getString("type"),res.getString("FromID"),sdf.parse(res.getString("time")),new Boolean(res.getString("isread"))));
+			boolean isread;
+			if(res.getInt("isread")==1){
+				isread=true;
+			}
+			else
+				isread=false;
+			words.add(new Word(res.getString("Word"), res.getString("type"),res.getString("FromID"),sdf.parse(res.getString("time")),isread));
 		}
 		/*sql="delete from sharedword where ToID='"+id+"'";
 		ExcuteUpdate(sql, null);*/
@@ -295,5 +301,11 @@ public class Service extends DBOption{
 			ExcuteUpdate(sql, params);
 		}
 		return new Response(800,"分享成功");
+	}
+	
+	public Response UpdateSharedWord(String id) throws SQLException{
+		String sql="update sharedword set isread=1 where ToID='"+id+"'";
+		ExcuteUpdate(sql, null);
+		return new Response(1000,"");
 	}
 }
