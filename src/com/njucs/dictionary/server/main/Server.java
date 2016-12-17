@@ -60,7 +60,8 @@ public class Server {
 		OnlineNum--;
 		serverframe.SetOnlineNum(OnlineNum);
 	}
-		
+	
+	//主循环，监听并建立连接
 	private void mainloop() throws IOException, ClassNotFoundException{
 		while(true){
 			Socket socket=serverSocket.accept();
@@ -69,6 +70,7 @@ public class Server {
 		}
 	}
 	
+	//处理请求类
 	private class HandleARequest implements Runnable{
 		Socket socket;
 		

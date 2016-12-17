@@ -58,7 +58,7 @@ public class Service extends DBOption{
 	 * type=2表示金山
 	 */
 	
-	//不带记录状态的获取函数
+	//不带记录状态的获取函数（测试用）
 	public Response GetLikeNum(String word) throws SQLException{
 		Like like=new Like(0,0,0);
 		for(int type=0;type<3;type++){
@@ -116,7 +116,7 @@ public class Service extends DBOption{
 		return new Response(300,like);
 	}
 	
-	//更新点赞数时不增加记录
+	//更新点赞数时不增加记录（测试用）
 	public Response UpdateLikeNum(String word, Like like) throws SQLException{
 		for(int type=0;type<3;type++){
 			String sql="select * from dictionary where word='"+word+"' and type="+type;
@@ -250,6 +250,7 @@ public class Service extends DBOption{
 			return new Response(302,"");
 	}
 
+	//获取用户列表
 	public Response GetUserTable() throws SQLException{
 		UserTable usertable=new UserTable();
 		String sql="select * from account";
@@ -262,6 +263,7 @@ public class Service extends DBOption{
 		return new Response(310,usertable);
 	}
 
+	//更新用户列表
 	public void UpdateUserState(String id, int state) throws SQLException{
 		String sql="select * from account where id='"+id+"'";
 		ResultSet res=executeQueryRS(sql, null);
@@ -271,6 +273,7 @@ public class Service extends DBOption{
 		}
 	}
 	
+	//获取被分享信息
 	public Response GetSharedWord(String id) throws Exception{
 		String sql="select * from sharedword where ToID='"+id+"'";
 		ResultSet res=executeQueryRS(sql, null);
@@ -290,6 +293,7 @@ public class Service extends DBOption{
 		return new Response(900,words);
 	}
 	
+	//发送分享信息
 	public Response SendSharedWord(String id,Share share) throws SQLException{
 		ArrayList<String> sharelist=share.getShareList();
 		SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -303,6 +307,7 @@ public class Service extends DBOption{
 		return new Response(800,"分享成功");
 	}
 	
+	//更新信息的阅读状态
 	public Response UpdateSharedWord(String id) throws SQLException{
 		String sql="update sharedword set isread=1 where ToID='"+id+"'";
 		ExcuteUpdate(sql, null);

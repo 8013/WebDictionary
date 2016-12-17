@@ -33,6 +33,8 @@ import javax.swing.table.DefaultTableModel;
 
 @SuppressWarnings("serial")
 public class ServerFrame extends JFrame{
+	
+	//面板组件
 	private JTable MessageTable;
 	private DefaultTableModel model=new DefaultTableModel();
 	private JScrollPane Content;
@@ -40,11 +42,18 @@ public class ServerFrame extends JFrame{
 	private JComboBox<String> MessageType;
 	private JLabel labelhead;
 	private JLabel labelbottom;
+	
+	//日志信息容器
+	//显示面板中的信息
 	private Vector<Vector<String>> Message;
+	//内存中的所有信息
 	private Vector<Vector<String>> BufferedMessage;
+	//消息类型的索引
 	private Vector<Integer>[] MessageIndex;
 	private Vector<String> ColumnNames;
 	private int CurrentType=0;
+	
+	//下拉菜单项
 	private final String[] TYPE={"All","Login","Logout","Register","Like","Cancellike","Searchlikenum","GetUserTable","SendSharedWord","GetSharedword","Exit"};
 	
 	public ServerFrame(){
@@ -67,6 +76,8 @@ public class ServerFrame extends JFrame{
 		ServerStart();
 	}
 	
+	
+	//设置面板各组件属性
 	private JButton SetClearButton(){
 		ClearMessage=new JButton("Clear");
 		ClearMessage.setBounds(480, 0, 115, 20);
@@ -171,6 +182,7 @@ public class ServerFrame extends JFrame{
 		}
 	}
 	
+	//消息检索所需函数
 	private Vector<Vector<String>> GetMessage(){
 		Message.clear();
 		Vector<Vector<String>> TempMessage=new Vector<Vector<String>>();
@@ -180,6 +192,7 @@ public class ServerFrame extends JFrame{
 		return TempMessage;
 	}
 	
+	//改变异常的信息显示颜色
 	private void RefreshTableFontColor(){
 		//修改表格行颜色
 		DefaultTableCellRenderer dtc=new DefaultTableCellRenderer(){
@@ -221,6 +234,7 @@ public class ServerFrame extends JFrame{
 		BufferedMessage.clear();
 	}
 	
+	//日志信息保存到文件
 	private void SaveLog(){
 		File file=new File("Service.log");
 		FileOutputStream out;
@@ -240,6 +254,7 @@ public class ServerFrame extends JFrame{
 		}
 	}
 	
+	//日志信息添加的唯一入口
 	public void AddMessage(String Type, String Description, String State, String TimeStamp, String IPAddress){
 		Vector<String> Row=new Vector<String>();
 		Row.add(Type);
@@ -262,10 +277,12 @@ public class ServerFrame extends JFrame{
 		}
 	}
 	
+	//在面板上显示在线人数
 	public void SetOnlineNum(int num){
 		labelbottom.setText("Current Online Client Num:"+num);
 	}
 	
+	//关闭服务器
 	public void close(){
 		ServerEnd();
 	}
